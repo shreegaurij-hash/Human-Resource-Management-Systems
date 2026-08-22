@@ -70,14 +70,18 @@ export const DatasetUploader: React.FC<DatasetUploaderProps> = ({ onLoginRequest
           onDragOver={preventDefault}
           onDragEnter={preventDefault}
           onDrop={handleDrop}
-          className={`relative border-2 rounded-3xl p-16 flex flex-col items-center justify-center transition-all ${
+          className={`relative border-2 rounded-3xl p-16 flex flex-col items-center justify-center transition-all overflow-hidden group ${
             isUploading 
               ? 'border-yellow-400 bg-yellow-500/10 border-solid' 
               : uploadSuccess 
                 ? 'border-emerald-500/50 bg-zinc-900/50 border-solid cursor-default' 
-                : 'border-zinc-800 border-dashed bg-zinc-900 hover:border-yellow-500 hover:bg-zinc-800 cursor-pointer'
+                : 'border-zinc-800 border-dashed bg-zinc-950 hover:border-yellow-500/50 hover:bg-zinc-900 cursor-pointer shadow-2xl'
           }`}
         >
+          {/* Subtle background gradient on hover */}
+          {!isUploading && !uploadSuccess && (
+            <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/0 via-yellow-500/0 to-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          )}
           {!uploadSuccess && <input type="file" accept=".xlsx,.xls,.csv,.json" className="hidden" onChange={handleDrop} />}
           
           <AnimatePresence mode="wait">
@@ -105,9 +109,16 @@ export const DatasetUploader: React.FC<DatasetUploaderProps> = ({ onLoginRequest
               </motion.div>
             ) : (
               <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center">
-                <FileSpreadsheet size={48} className="text-zinc-600 mb-4" />
-                <p className="text-xl font-bold text-white mb-1">Click or drag dataset here</p>
-                <p className="text-sm text-zinc-500">Supports .xlsx, .csv, and .json</p>
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-yellow-400/20 rounded-full blur-xl animate-pulse"></div>
+                  <div className="relative w-20 h-20 bg-zinc-950 border border-zinc-800 rounded-full flex items-center justify-center shadow-2xl">
+                    <UploadCloud size={36} className="text-yellow-500" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-black text-white mb-2 tracking-tight">Click or drag dataset here</h3>
+                <p className="text-sm text-zinc-400 font-medium bg-zinc-950/50 px-4 py-1.5 rounded-full border border-zinc-800">
+                  Supports .xlsx, .csv, and .json
+                </p>
               </motion.div>
             )}
           </AnimatePresence>

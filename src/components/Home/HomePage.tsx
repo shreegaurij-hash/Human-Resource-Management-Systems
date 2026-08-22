@@ -79,7 +79,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           blond
         </a>
         <div className="hidden md:flex items-center gap-8 font-medium">
-          <button className="hover:opacity-60 transition-opacity">Solutions ˅</button>
+          <a href="#solutions" className="hover:opacity-60 transition-opacity cursor-pointer">Solutions ˅</a>
           <button className="hover:opacity-60 transition-opacity">Work</button>
           <button className="hover:opacity-60 transition-opacity">About us</button>
           <button 
@@ -105,14 +105,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
         </motion.h1>
 
         {/* Lower Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-auto pb-20">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-16 mt-auto pb-20 w-full">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col justify-end max-w-md"
+            className="flex flex-col justify-end flex-1"
           >
-            <p className="text-2xl font-bold mb-8 leading-snug">
+            <p className="text-xl md:text-2xl font-bold mb-8 leading-snug whitespace-normal md:whitespace-nowrap">
               Everything on the internet revolves around intelligence, efficiency, and optimization. And aesthetics matter too.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed border-b border-black pb-1 inline-block w-fit">
@@ -124,7 +124,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative h-96 w-full hidden md:block"
+            className="relative h-96 w-full hidden md:block md:w-[450px] shrink-0"
           >
             {/* Mocked Cards imitating the image */}
             <div className="absolute top-10 left-0 w-48 h-64 rounded-xl shadow-2xl p-4 transform -rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10 flex flex-col justify-between" style={{ backgroundImage: 'url(/leave_tracker.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -151,10 +151,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
         </div>
       </main>
 
-
-
       {/* Showcase Section */}
-      <section className="relative z-10 py-32 bg-white">
+      <section id="solutions" className="relative z-10 py-32 bg-white scroll-mt-24">
         <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-16">
           {/* Column 1: For Employees */}
           <div>

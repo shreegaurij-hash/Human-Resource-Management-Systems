@@ -9,10 +9,13 @@ type Message = {
   content: string;
 };
 
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 export function ChatbotPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi! I'm Dayflow AI. How can I help you navigate your HR workspace today?" }
+    { role: "assistant", content: "Hi! I'm Blond AI. How can I help you navigate your HR workspace today?" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +83,7 @@ export function ChatbotPopup() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 w-[380px] h-[600px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden z-50"
+            className="fixed bottom-6 right-6 w-[450px] h-[600px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden z-50"
           >
             {/* Header */}
             <div className="bg-black text-white p-4 flex items-center justify-between">
@@ -89,7 +92,7 @@ export function ChatbotPopup() {
                   <Bot size={18} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">Dayflow AI</h3>
+                  <h3 className="font-bold text-sm">Blond AI</h3>
                   <p className="text-[10px] text-gray-300">Powered by Groq</p>
                 </div>
               </div>
@@ -111,13 +114,17 @@ export function ChatbotPopup() {
                     </div>
                   )}
                   <div 
-                    className={`px-4 py-2 rounded-2xl max-w-[80%] text-sm leading-relaxed ${
+                    className={`px-4 py-3 rounded-2xl max-w-[85%] text-sm leading-relaxed ${
                       msg.role === "user" 
                         ? "bg-black text-white rounded-tr-sm" 
-                        : "bg-white border border-gray-200 text-black rounded-tl-sm shadow-sm"
+                        : "bg-white border border-gray-200 text-black rounded-tl-sm shadow-sm prose prose-sm prose-p:my-1 prose-h1:text-lg prose-h2:text-base prose-h3:text-sm prose-ul:my-1 prose-li:my-0 prose-table:my-2 prose-td:p-1 prose-th:p-1"
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === "assistant" ? (
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
                   </div>
                   {msg.role === "user" && (
                     <div className="w-6 h-6 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center shrink-0 mt-1">
