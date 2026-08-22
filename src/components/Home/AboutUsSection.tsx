@@ -21,10 +21,11 @@ export const AboutUsSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-[4rem] md:text-[7rem] leading-[0.9] font-black tracking-tighter text-black uppercase"
+            className="text-[4rem] md:text-[7rem] leading-[0.9] font-bold tracking-tighter text-black uppercase"
+            style={{ fontFamily: 'monospace' }}
           >
             We build<br/>
-            <span className="text-[#FCEF3B]" style={{ textShadow: '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000' }}>
+            <span className="text-[#FCEF3B]">
               intelligent
             </span><br/>
             HR technology<br/>

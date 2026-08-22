@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import { UploadCloud, CheckCircle2, Loader2, FileSpreadsheet, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const DatasetUploader = () => {
+interface DatasetUploaderProps {
+  onLoginRequest?: () => void;
+}
+
+export const DatasetUploader: React.FC<DatasetUploaderProps> = ({ onLoginRequest }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [analysis, setAnalysis] = useState("");
@@ -66,15 +70,15 @@ export const DatasetUploader = () => {
           onDragOver={preventDefault}
           onDragEnter={preventDefault}
           onDrop={handleDrop}
-          className={`relative border-2 border-dashed rounded-3xl p-16 flex flex-col items-center justify-center cursor-pointer transition-all ${
+          className={`relative border-2 rounded-3xl p-16 flex flex-col items-center justify-center transition-all ${
             isUploading 
-              ? 'border-yellow-400 bg-yellow-500/10' 
+              ? 'border-yellow-400 bg-yellow-500/10 border-solid' 
               : uploadSuccess 
-                ? 'border-emerald-400 bg-emerald-500/10' 
-                : 'border-zinc-800 bg-zinc-900 hover:border-yellow-500 hover:bg-zinc-800'
+                ? 'border-emerald-500/50 bg-zinc-900/50 border-solid cursor-default' 
+                : 'border-zinc-800 border-dashed bg-zinc-900 hover:border-yellow-500 hover:bg-zinc-800 cursor-pointer'
           }`}
         >
-          <input type="file" accept=".xlsx,.xls,.csv,.json" className="hidden" onChange={handleDrop} />
+          {!uploadSuccess && <input type="file" accept=".xlsx,.xls,.csv,.json" className="hidden" onChange={handleDrop} />}
           
           <AnimatePresence mode="wait">
             {isUploading ? (
@@ -83,12 +87,21 @@ export const DatasetUploader = () => {
                 <p className="text-xl font-bold text-white">Analyzing workforce data with Groq AI...</p>
               </motion.div>
             ) : uploadSuccess ? (
-              <motion.div key="success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center">
-                <CheckCircle2 size={48} className="text-emerald-500 mb-4" />
-                <p className="text-xl font-bold text-white mb-2">Company Onboarded Successfully!</p>
-                <div className="bg-zinc-950/60 p-6 rounded-xl border border-emerald-900/50 text-sm text-emerald-400 font-medium max-w-lg text-left">
+              <motion.div key="success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center w-full">
+                <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6">
+                  <CheckCircle2 size={32} className="text-emerald-500" />
+                </div>
+                <h3 className="text-2xl font-black text-white mb-6">Company Onboarded Successfully!</h3>
+                <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 text-base text-zinc-300 font-medium w-full max-w-2xl text-left shadow-2xl leading-relaxed whitespace-pre-wrap">
                   {analysis}
                 </div>
+                
+                <button 
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (onLoginRequest) onLoginRequest(); }}
+                  className="mt-8 px-8 py-4 bg-yellow-400 text-black rounded-xl font-bold hover:bg-yellow-300 transition-colors shadow-[0_0_20px_rgba(252,239,59,0.3)] flex items-center gap-2"
+                >
+                  Sign in to Dashboard
+                </button>
               </motion.div>
             ) : (
               <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center">

@@ -151,8 +151,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
         </div>
       </main>
 
-      {/* About Us Section */}
-      <AboutUsSection />
+
 
       {/* Showcase Section */}
       <section className="relative z-10 py-32 bg-white">
@@ -228,7 +227,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
       </section>
 
       {/* Dataset Uploader Section */}
-      <DatasetUploader />
+      <DatasetUploader onLoginRequest={() => setShowLogin(true)} />
+
+      {/* About Us Section */}
+      <AboutUsSection />
 
       {/* Login Modal Overlay */}
       <AnimatePresence>
