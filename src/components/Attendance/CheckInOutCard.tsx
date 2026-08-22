@@ -46,12 +46,12 @@ export const CheckInOutCard = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-sm w-full text-white shadow-2xl relative overflow-hidden"
+      className="bg-white shadow-xl border border-gray-200 rounded-3xl p-8 max-w-sm w-full text-black shadow-2xl relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500" />
 
       <h2 className="text-3xl font-extrabold tracking-tight mb-2">Today's Shift</h2>
-      <p className="text-zinc-400 mb-6 font-medium">
+      <p className="text-gray-500 mb-6 font-medium">
         {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
       </p>
 
@@ -67,7 +67,7 @@ export const CheckInOutCard = () => {
               exit={{ scale: 0.8, opacity: 0 }}
               className="text-center"
             >
-              <div className="w-32 h-32 rounded-full border-4 border-zinc-800 flex items-center justify-center mb-4">
+              <div className="w-32 h-32 rounded-full border-4 border-gray-200 flex items-center justify-center mb-4">
                 <span className="text-zinc-500 text-sm font-bold uppercase tracking-widest">Ready</span>
               </div>
             </motion.div>
@@ -98,8 +98,8 @@ export const CheckInOutCard = () => {
               exit={{ scale: 0.8, opacity: 0 }}
               className="text-center"
             >
-              <div className="w-32 h-32 rounded-full border-4 border-zinc-700 flex items-center justify-center mb-4 bg-zinc-800/50">
-                <span className="text-zinc-400 text-sm font-bold uppercase tracking-widest">Done</span>
+              <div className="w-32 h-32 rounded-full border-4 border-gray-200 flex items-center justify-center mb-4 bg-gray-50/50">
+                <span className="text-gray-500 text-sm font-bold uppercase tracking-widest">Done</span>
               </div>
             </motion.div>
           )}
@@ -115,8 +115,8 @@ export const CheckInOutCard = () => {
           status === 'IDLE' 
             ? 'bg-white text-black hover:bg-zinc-200' 
             : status === 'CHECKED_IN'
-              ? 'bg-red-500 text-white hover:bg-red-600'
-              : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+              ? 'bg-red-500 text-black hover:bg-red-600'
+              : 'bg-gray-50 text-zinc-500 cursor-not-allowed'
         }`}
       >
         {loading ? 'Processing...' : status === 'IDLE' ? 'Check In' : status === 'CHECKED_IN' ? 'Check Out' : 'Shift Complete'}

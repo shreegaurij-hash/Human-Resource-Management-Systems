@@ -5,15 +5,15 @@ import { WeeklyHistoryView } from '../../components/Attendance/WeeklyHistoryView
 
 export default function AttendancePage() {
   return (
-    <div className="min-h-screen bg-black text-white p-8 md:p-12 font-sans selection:bg-pink-500 selection:text-white">
+    <div className="min-h-screen bg-black text-black p-8 md:p-12 font-sans selection:bg-pink-500 selection:text-black">
       {/* Top Navigation */}
       <nav className="max-w-7xl mx-auto flex items-center justify-between mb-12">
         <Link href="/" className="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500">
           DAYFLOW.
         </Link>
         <div className="flex items-center gap-6 text-sm font-semibold text-zinc-400">
-          <Link href="/attendance" className="text-white border-b border-pink-500 pb-0.5">Attendance</Link>
-          <Link href="/leave" className="hover:text-white transition-colors">Leave</Link>
+          <Link href="/attendance" className="text-black border-b border-pink-500 pb-0.5">Attendance</Link>
+          <Link href="/leave" className="hover:text-black transition-colors">Leave</Link>
         </div>
       </nav>
 

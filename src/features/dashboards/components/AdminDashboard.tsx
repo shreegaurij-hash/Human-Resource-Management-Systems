@@ -46,7 +46,7 @@ const activityIconMap: Record<string, React.ReactElement> = {
 
 function Avatar({ initials }: { initials: string }) {
   return (
-    <div className="h-9 w-9 rounded-full bg-neutral-700 flex items-center justify-center text-xs font-black text-white flex-shrink-0">
+    <div className="h-9 w-9 rounded-full bg-gray-200 flex items-center justify-center text-xs font-black text-black flex-shrink-0">
       {initials}
     </div>
   );
@@ -61,16 +61,16 @@ function StatCard({
   return (
     <motion.div
       whileHover={{ scale: 1.02, y: -3 }}
-      className="rounded-2xl bg-neutral-900 border border-neutral-800 p-6 group cursor-default relative overflow-hidden"
+      className="rounded-2xl bg-white shadow-sm border border-gray-200 p-6 group cursor-default relative overflow-hidden"
     >
       <div className="flex items-start justify-between mb-4">
-        <p className="text-xs font-bold tracking-widest text-neutral-400 uppercase">{label}</p>
+        <p className="text-xs font-bold tracking-widest text-gray-600 uppercase">{label}</p>
         <div className={cn("p-2.5 rounded-xl transition-transform group-hover:rotate-12", color)}>
-          <Icon size={18} className="text-white" />
+          <Icon size={18} className="text-black" />
         </div>
       </div>
-      <p className="text-4xl font-black text-white">{value}</p>
-      {sub && <p className="text-xs text-neutral-500 font-medium mt-1">{sub}</p>}
+      <p className="text-4xl font-black text-black">{value}</p>
+      {sub && <p className="text-xs text-gray-500 font-medium mt-1">{sub}</p>}
       {trend && (
         <span className={cn(
           "mt-3 inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full",
@@ -88,9 +88,9 @@ function SectionCard({ title, action, children, className }: {
   title: string; action?: React.ReactNode; children: React.ReactNode; className?: string;
 }) {
   return (
-    <div className={cn("rounded-2xl bg-neutral-900 border border-neutral-800 p-6", className)}>
+    <div className={cn("rounded-2xl bg-white shadow-sm border border-gray-200 p-6", className)}>
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-sm font-bold tracking-widest text-neutral-400 uppercase">{title}</h3>
+        <h3 className="text-sm font-bold tracking-widest text-gray-600 uppercase">{title}</h3>
         {action}
       </div>
       {children}
@@ -104,10 +104,10 @@ function QuickLink({ icon, label, href }: { icon: React.ReactNode; label: string
       href={href}
       whileHover={{ scale: 1.04, y: -2 }}
       whileTap={{ scale: 0.97 }}
-      className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-neutral-800 hover:bg-neutral-700 transition-colors"
+      className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-gray-100 hover:bg-gray-200 transition-colors"
     >
-      <div className="p-3 rounded-xl bg-neutral-700 text-white">{icon}</div>
-      <span className="text-xs font-bold text-neutral-300 text-center">{label}</span>
+      <div className="p-3 rounded-xl bg-gray-200 text-black">{icon}</div>
+      <span className="text-xs font-bold text-gray-700 text-center">{label}</span>
     </motion.a>
   );
 }
@@ -149,22 +149,22 @@ export function AdminDashboard() {
   const pendingCount = Object.values(leaveActions).filter(v => v === null).length;
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#F8F9FA] text-black">
       {/* ── Top Bar ── */}
-      <header className="sticky top-0 z-30 bg-black/80 backdrop-blur border-b border-neutral-800 px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-[#F8F9FA]/80 backdrop-blur border-b border-gray-200 px-6 py-4 flex items-center justify-between">
         <div>
-          <h2 className="text-base font-black text-white">Admin / HR Dashboard</h2>
-          <p className="text-xs text-neutral-500 font-medium">
+          <h2 className="text-base font-black text-black">Admin / HR Dashboard</h2>
+          <p className="text-xs text-gray-500 font-medium">
             {new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
           </p>
         </div>
         <button
           onClick={() => setShowNotifs(!showNotifs)}
-          className="relative p-2 rounded-full bg-neutral-900 hover:bg-neutral-800 transition-colors"
+          className="relative p-2 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-colors"
         >
           <Bell size={18} />
           {mockAdminNotifications.length > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] flex items-center justify-center font-black">
+            <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-rose-500 text-black text-[9px] flex items-center justify-center font-black">
               {mockAdminNotifications.length}
             </span>
           )}
@@ -178,13 +178,13 @@ export function AdminDashboard() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="absolute top-16 right-6 z-40 w-80 bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl p-4 space-y-3"
+            className="absolute top-16 right-6 z-40 w-80 bg-white shadow-sm border border-gray-200 rounded-2xl shadow-2xl p-4 space-y-3"
           >
-            <p className="text-xs font-bold tracking-widest text-neutral-400 uppercase mb-3">Notifications</p>
+            <p className="text-xs font-bold tracking-widest text-gray-600 uppercase mb-3">Notifications</p>
             {mockAdminNotifications.map(n => (
               <div key={n.id} className={cn("border-l-2 pl-3 py-1", notifColor[n.type] ?? "border-l-neutral-600")}>
-                <p className="text-sm text-white font-medium">{n.message}</p>
-                <p className="text-xs text-neutral-500 mt-0.5">{n.time}</p>
+                <p className="text-sm text-black font-medium">{n.message}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{n.time}</p>
               </div>
             ))}
           </motion.div>
@@ -200,7 +200,7 @@ export function AdminDashboard() {
         {/* ── Header ── */}
         <motion.div variants={itemVariants}>
           <h1 className="text-4xl sm:text-5xl font-black tracking-tighter">Admin Portal</h1>
-          <p className="text-neutral-500 font-medium mt-1">Overview of company operations and pending actions.</p>
+          <p className="text-gray-500 font-medium mt-1">Overview of company operations and pending actions.</p>
         </motion.div>
 
         {/* ── Row 1: KPI Cards ── */}
@@ -242,8 +242,8 @@ export function AdminDashboard() {
                   ].map(({ label, count, color }) => (
                     <div key={label} className="flex items-center gap-2 text-sm">
                       <span className={cn("h-2.5 w-2.5 rounded-full", color)} />
-                      <span className="text-neutral-400 font-medium">{label}</span>
-                      <span className="text-white font-black">{count}</span>
+                      <span className="text-gray-600 font-medium">{label}</span>
+                      <span className="text-black font-black">{count}</span>
                       <span className="text-neutral-600">({Math.round((count / mockAdminStats.totalEmployees) * 100)}%)</span>
                     </div>
                   ))}
@@ -258,7 +258,7 @@ export function AdminDashboard() {
           <SectionCard
             title="Employee Directory"
             action={
-              <a href="/employees" className="text-xs font-bold text-white hover:text-neutral-300 flex items-center gap-1">
+              <a href="/employees" className="text-xs font-bold text-black hover:text-gray-700 flex items-center gap-1">
                 View All <ChevronRight size={12} />
               </a>
             }
@@ -266,13 +266,13 @@ export function AdminDashboard() {
             {/* Search + Filter */}
             <div className="flex flex-col sm:flex-row gap-3 mb-5">
               <div className="relative flex-1">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   type="text"
                   placeholder="Search by name, ID, department…"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm text-white placeholder-neutral-500 outline-none focus:border-neutral-500 transition-colors"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-gray-100 border border-gray-300 text-sm text-black placeholder-neutral-500 outline-none focus:border-neutral-500 transition-colors"
                 />
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -284,7 +284,7 @@ export function AdminDashboard() {
                       "px-3 py-2 rounded-xl text-xs font-bold transition-colors",
                       filterStatus === s
                         ? "bg-white text-black"
-                        : "bg-neutral-800 text-neutral-400 hover:bg-neutral-700"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                     )}
                   >
                     {s}
@@ -297,9 +297,9 @@ export function AdminDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-neutral-800 text-left">
+                  <tr className="border-b border-gray-200 text-left">
                     {["Employee", "ID", "Department", "Designation", "Status"].map(h => (
-                      <th key={h} className="pb-3 pr-6 text-xs text-neutral-500 font-bold uppercase tracking-wider whitespace-nowrap">{h}</th>
+                      <th key={h} className="pb-3 pr-6 text-xs text-gray-500 font-bold uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -311,17 +311,17 @@ export function AdminDashboard() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="hover:bg-neutral-800/30 transition-colors"
+                        className="hover:bg-gray-100/30 transition-colors"
                       >
                         <td className="py-3 pr-6">
                           <div className="flex items-center gap-3">
                             <Avatar initials={emp.avatar} />
-                            <span className="font-bold text-white whitespace-nowrap">{emp.name}</span>
+                            <span className="font-bold text-black whitespace-nowrap">{emp.name}</span>
                           </div>
                         </td>
-                        <td className="py-3 pr-6 text-neutral-400 font-mono text-xs">{emp.id}</td>
-                        <td className="py-3 pr-6 text-neutral-300 whitespace-nowrap">{emp.department}</td>
-                        <td className="py-3 pr-6 text-neutral-400 whitespace-nowrap">{emp.designation}</td>
+                        <td className="py-3 pr-6 text-gray-600 font-mono text-xs">{emp.id}</td>
+                        <td className="py-3 pr-6 text-gray-700 whitespace-nowrap">{emp.department}</td>
+                        <td className="py-3 pr-6 text-gray-600 whitespace-nowrap">{emp.designation}</td>
                         <td className="py-3">
                           <span className={cn("px-2.5 py-1 rounded-full text-xs font-bold", empStatusColor[emp.status])}>
                             {emp.status}
@@ -332,7 +332,7 @@ export function AdminDashboard() {
                   </AnimatePresence>
                   {filteredEmployees.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-neutral-500 font-medium">No employees match your search.</td>
+                      <td colSpan={5} className="py-8 text-center text-gray-500 font-medium">No employees match your search.</td>
                     </tr>
                   )}
                 </tbody>
@@ -350,26 +350,26 @@ export function AdminDashboard() {
               {mockPendingLeaves.map(req => {
                 const action = leaveActions[req.id];
                 return (
-                  <div key={req.id} className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-neutral-800/50 border border-neutral-800">
+                  <div key={req.id} className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-gray-100/50 border border-gray-200">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <Avatar initials={req.avatar} />
                       <div className="min-w-0">
-                        <p className="font-bold text-white truncate">{req.employee}</p>
-                        <p className="text-xs text-neutral-500 font-medium">{req.department} • {req.id}</p>
+                        <p className="font-bold text-black truncate">{req.employee}</p>
+                        <p className="text-xs text-gray-500 font-medium">{req.department} • {req.id}</p>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
                       <div>
-                        <p className="text-xs text-neutral-500 font-medium">Type</p>
-                        <p className="text-white font-bold whitespace-nowrap">{req.type}</p>
+                        <p className="text-xs text-gray-500 font-medium">Type</p>
+                        <p className="text-black font-bold whitespace-nowrap">{req.type}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-neutral-500 font-medium">Duration</p>
-                        <p className="text-white font-bold whitespace-nowrap">{req.from} – {req.to}</p>
+                        <p className="text-xs text-gray-500 font-medium">Duration</p>
+                        <p className="text-black font-bold whitespace-nowrap">{req.from} – {req.to}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-neutral-500 font-medium">Days</p>
-                        <p className="text-white font-black">{req.days}d</p>
+                        <p className="text-xs text-gray-500 font-medium">Days</p>
+                        <p className="text-black font-black">{req.days}d</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
@@ -379,7 +379,7 @@ export function AdminDashboard() {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleLeaveAction(req.id, "Approved")}
-                            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-black text-xs font-black transition-colors"
                           >
                             <CheckCircle2 size={13} /> Approve
                           </motion.button>
@@ -387,7 +387,7 @@ export function AdminDashboard() {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleLeaveAction(req.id, "Rejected")}
-                            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-black transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-black text-xs font-black transition-colors"
                           >
                             <XCircle size={13} /> Reject
                           </motion.button>
@@ -423,11 +423,11 @@ export function AdminDashboard() {
             <div className="space-y-4">
               {mockAdminActivity.map(act => (
                 <div key={act.id} className="flex items-start gap-3">
-                  <div className="mt-0.5 p-2 rounded-xl bg-neutral-800 text-neutral-400 flex-shrink-0">
+                  <div className="mt-0.5 p-2 rounded-xl bg-gray-100 text-gray-600 flex-shrink-0">
                     {activityIconMap[act.icon]}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white font-medium truncate">{act.action}</p>
+                    <p className="text-sm text-black font-medium truncate">{act.action}</p>
                     <p className="text-xs text-neutral-600 mt-0.5">{act.time}</p>
                   </div>
                 </div>

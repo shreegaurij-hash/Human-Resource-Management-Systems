@@ -37,15 +37,15 @@ export function QuickAccessCard({
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "group relative overflow-hidden rounded-2xl bg-black p-6 text-white shadow-xl transition-colors hover:bg-neutral-900 cursor-pointer border border-neutral-800",
+        "group relative overflow-hidden rounded-2xl bg-[#F8F9FA] p-6 text-black shadow-xl transition-colors hover:bg-white shadow-sm cursor-pointer border border-gray-200",
         className
       )}
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-bold tracking-widest text-neutral-400 uppercase">
+        <h3 className="text-sm font-bold tracking-widest text-gray-600 uppercase">
           {title}
         </h3>
-        <div className="rounded-full bg-neutral-800 p-3 text-white transition-transform group-hover:rotate-12">
+        <div className="rounded-full bg-gray-100 p-3 text-black transition-transform group-hover:rotate-12">
           <Icon size={20} strokeWidth={2.5} />
         </div>
       </div>
@@ -70,7 +70,7 @@ export function QuickAccessCard({
               </span>
             )}
             {description && (
-              <span className="text-neutral-500">{description}</span>
+              <span className="text-gray-500">{description}</span>
             )}
           </div>
         )}

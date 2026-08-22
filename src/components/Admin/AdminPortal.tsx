@@ -16,9 +16,9 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToHome }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('LeaveApprovals');
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] text-black font-sans">
       {/* Top Header Navigation — Ninaad's original structure preserved */}
-      <header className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur sticky top-0 z-40 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <header className="border-b border-gray-200 bg-zinc-950/80 backdrop-blur sticky top-0 z-40 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-4">
           <div className="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-amber-500 to-yellow-500">
             DAYFLOW ADMIN.
@@ -29,13 +29,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToHome }) => {
         </div>
 
         {/* Tab Switcher — Ninaad's two tabs preserved, Karan's tab added */}
-        <div className="flex bg-zinc-900 border border-zinc-800 rounded-full p-1">
+        <div className="flex bg-white shadow-xl border border-gray-200 rounded-full p-1">
           <button
             onClick={() => setActiveTab('LeaveApprovals')}
             className={`px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all ${
               activeTab === 'LeaveApprovals'
-                ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-black shadow-md'
+                : 'text-gray-500 hover:text-black'
             }`}
           >
             📋 Leave Approvals
@@ -45,7 +45,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToHome }) => {
             className={`px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all ${
               activeTab === 'PayrollControl'
                 ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                : 'text-gray-500 hover:text-black'
             }`}
           >
             💰 Payroll Management
@@ -55,8 +55,8 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToHome }) => {
             onClick={() => setActiveTab('AttendanceOverview')}
             className={`px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all ${
               activeTab === 'AttendanceOverview'
-                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-black shadow-md'
+                : 'text-gray-500 hover:text-black'
             }`}
           >
             🕐 Attendance
@@ -66,7 +66,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToHome }) => {
         {onBackToHome && (
           <button
             onClick={onBackToHome}
-            className="text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700 px-4 py-2 rounded-full transition-all"
+            className="text-xs font-bold text-gray-500 hover:text-black border border-gray-200 hover:border-gray-200 px-4 py-2 rounded-full transition-all"
           >
             ← Exit Admin Hub
           </button>
@@ -99,7 +99,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToHome }) => {
               <h2 className="text-4xl font-black tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-br from-white to-zinc-500">
                 Attendance Overview
               </h2>
-              <p className="text-zinc-400 font-medium text-lg">Monitor employee attendance records and daily logs.</p>
+              <p className="text-gray-500 font-medium text-lg">Monitor employee attendance records and daily logs.</p>
             </div>
             <WeeklyHistoryView />
           </motion.div>

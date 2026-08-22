@@ -47,7 +47,7 @@ export const AdminPayrollManagement: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans p-6 md:p-10">
+    <div className="min-h-screen bg-[#F8F9FA] text-black font-sans p-6 md:p-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -63,7 +63,7 @@ export const AdminPayrollManagement: React.FC = () => {
           <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 uppercase tracking-tight">
             Payroll Management
           </h1>
-          <p className="text-zinc-400 font-medium">
+          <p className="text-gray-500 font-medium">
             Configure employee compensation, adjust tax rates, and execute monthly payroll runs.
           </p>
         </div>
@@ -84,7 +84,7 @@ export const AdminPayrollManagement: React.FC = () => {
           className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-2xl font-bold flex justify-between items-center"
         >
           <span>✅ {successMessage}</span>
-          <button onClick={() => setSuccessMessage('')} className="text-zinc-500 hover:text-white">✕</button>
+          <button onClick={() => setSuccessMessage('')} className="text-zinc-500 hover:text-black">✕</button>
         </motion.div>
       )}
 
@@ -113,17 +113,17 @@ export const AdminPayrollManagement: React.FC = () => {
             title="Payroll Runs"
             value={`${summary.processedCount} Issued`}
             subtext="All current month ready"
-            color="border-zinc-800 bg-zinc-900/50"
+            color="border-gray-200 bg-white shadow-xl/50"
           />
         </div>
       )}
 
       {/* Search & Employee Table */}
-      <div className="bg-zinc-900/90 border border-zinc-800 p-8 rounded-3xl backdrop-blur shadow-2xl">
+      <div className="bg-white shadow-xl/90 border border-gray-200 p-8 rounded-3xl backdrop-blur shadow-2xl">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+          <h2 className="text-2xl font-bold text-black flex items-center gap-3">
             <span>Employee Salary Structures</span>
-            <span className="text-xs bg-zinc-800 text-zinc-400 px-3 py-1 rounded-full font-mono">
+            <span className="text-xs bg-gray-50 text-gray-500 px-3 py-1 rounded-full font-mono">
               {filteredStructures.length} Employees
             </span>
           </h2>
@@ -133,13 +133,13 @@ export const AdminPayrollManagement: React.FC = () => {
             placeholder="Search by name, department, designation..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full md:w-80 bg-zinc-800 border border-zinc-700 text-white rounded-xl px-4 py-2.5 outline-none focus:border-yellow-500 transition-colors text-sm"
+            className="w-full md:w-80 bg-gray-50 border border-gray-200 text-black rounded-xl px-4 py-2.5 outline-none focus:border-yellow-500 transition-colors text-sm"
           />
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-zinc-300">
-            <thead className="bg-zinc-950 text-xs font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800">
+            <thead className="bg-zinc-950 text-xs font-bold uppercase tracking-wider text-gray-500 border-b border-gray-200">
               <tr>
                 <th className="p-4">Employee</th>
                 <th className="p-4">Department</th>
@@ -159,13 +159,13 @@ export const AdminPayrollManagement: React.FC = () => {
                   struct.allowances.performanceBonus;
 
                 return (
-                  <tr key={struct.employeeId} className="hover:bg-zinc-800/40 transition-colors">
-                    <td className="p-4 font-bold text-white">
+                  <tr key={struct.employeeId} className="hover:bg-gray-50/40 transition-colors">
+                    <td className="p-4 font-bold text-black">
                       <div>{struct.employeeName}</div>
                       <div className="text-xs font-normal text-zinc-500">{struct.designation}</div>
                     </td>
                     <td className="p-4">
-                      <span className="px-2.5 py-1 bg-zinc-800 rounded-lg text-xs font-semibold">
+                      <span className="px-2.5 py-1 bg-gray-50 rounded-lg text-xs font-semibold">
                         {struct.department}
                       </span>
                     </td>
@@ -200,31 +200,31 @@ export const AdminPayrollManagement: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-[#F8F9FA]/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl w-full max-w-xl relative"
+              className="bg-white shadow-xl border border-gray-200 p-8 rounded-3xl w-full max-w-xl relative"
             >
               <button
                 onClick={() => setEditingStruct(null)}
-                className="absolute top-6 right-6 text-zinc-500 hover:text-white text-xl font-bold"
+                className="absolute top-6 right-6 text-zinc-500 hover:text-black text-xl font-bold"
               >
                 ✕
               </button>
 
-              <h2 className="text-2xl font-black text-white mb-1">
+              <h2 className="text-2xl font-black text-black mb-1">
                 Edit Salary Structure
               </h2>
-              <p className="text-sm text-zinc-400 mb-6">
+              <p className="text-sm text-gray-500 mb-6">
                 Employee: <span className="text-yellow-400 font-bold">{editingStruct.employeeName}</span> ({editingStruct.designation})
               </p>
 
               <form onSubmit={handleUpdateStructure} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
                     Base Salary (Monthly ₹)
                   </label>
                   <input
@@ -236,14 +236,14 @@ export const AdminPayrollManagement: React.FC = () => {
                         baseSalary: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-zinc-800 text-white rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+                    className="w-full bg-gray-50 text-black rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
                     required
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
                       HRA (House Rent)
                     </label>
                     <input
@@ -258,11 +258,11 @@ export const AdminPayrollManagement: React.FC = () => {
                           },
                         })
                       }
-                      className="w-full bg-zinc-800 text-white rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full bg-gray-50 text-black rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
                       Performance Bonus
                     </label>
                     <input
@@ -277,14 +277,14 @@ export const AdminPayrollManagement: React.FC = () => {
                           },
                         })
                       }
-                      className="w-full bg-zinc-800 text-white rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full bg-gray-50 text-black rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
                       TDS Tax Bracket (%)
                     </label>
                     <input
@@ -296,11 +296,11 @@ export const AdminPayrollManagement: React.FC = () => {
                           taxBracketPercentage: Number(e.target.value),
                         })
                       }
-                      className="w-full bg-zinc-800 text-white rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full bg-gray-50 text-black rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">
                       PF Percentage (%)
                     </label>
                     <input
@@ -312,7 +312,7 @@ export const AdminPayrollManagement: React.FC = () => {
                           pfPercentage: Number(e.target.value),
                         })
                       }
-                      className="w-full bg-zinc-800 text-white rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
+                      className="w-full bg-gray-50 text-black rounded-xl p-3 outline-none focus:ring-2 focus:ring-yellow-500"
                     />
                   </div>
                 </div>
@@ -321,7 +321,7 @@ export const AdminPayrollManagement: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setEditingStruct(null)}
-                    className="px-5 py-3 rounded-xl bg-zinc-800 text-zinc-300 font-bold text-sm"
+                    className="px-5 py-3 rounded-xl bg-gray-50 text-zinc-300 font-bold text-sm"
                   >
                     Cancel
                   </button>
@@ -356,10 +356,10 @@ const AdminStatCard = ({
     whileHover={{ y: -4 }}
     className={`p-6 rounded-3xl border ${color} backdrop-blur shadow-xl`}
   >
-    <div className="text-zinc-400 font-bold text-xs uppercase tracking-wider mb-2">
+    <div className="text-gray-500 font-bold text-xs uppercase tracking-wider mb-2">
       {title}
     </div>
-    <div className="text-3xl font-black text-white">{value}</div>
+    <div className="text-3xl font-black text-black">{value}</div>
     <div className="text-xs text-zinc-500 mt-2 font-medium">{subtext}</div>
   </motion.div>
 );

@@ -49,14 +49,14 @@ export const OnboardingChecklist: React.FC = () => {
   };
 
   return (
-    <div className="rounded-2xl bg-neutral-900 border border-neutral-800 p-6 shadow-2xl w-full">
+    <div className="rounded-2xl bg-white shadow-sm border border-gray-200 p-6 shadow-2xl w-full">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-sm font-bold tracking-widest text-neutral-400 uppercase flex items-center gap-2">
+          <h3 className="text-sm font-bold tracking-widest text-gray-600 uppercase flex items-center gap-2">
             <UserCheck size={16} className="text-blue-400" />
             New Hire Onboarding
           </h3>
-          <p className="text-xs text-neutral-500 mt-1">Track and manage onboarding progress for incoming employees.</p>
+          <p className="text-xs text-gray-500 mt-1">Track and manage onboarding progress for incoming employees.</p>
         </div>
         <div className="px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold">
           {onboardingList.length} Active Hires
@@ -73,7 +73,7 @@ export const OnboardingChecklist: React.FC = () => {
               key={hire.id}
               className={cn(
                 "border rounded-xl transition-colors overflow-hidden",
-                isExpanded ? "border-blue-500/50 bg-neutral-800/80" : "border-neutral-800 bg-neutral-800/30 hover:border-neutral-700 hover:bg-neutral-800/50"
+                isExpanded ? "border-blue-500/50 bg-gray-100/80" : "border-gray-200 bg-gray-100/30 hover:border-gray-300 hover:bg-gray-100/50"
               )}
             >
               {/* Header (Clickable to expand) */}
@@ -82,20 +82,20 @@ export const OnboardingChecklist: React.FC = () => {
                 onClick={() => setExpandedId(isExpanded ? null : hire.id)}
               >
                 <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-sm font-black text-white shadow-lg flex-shrink-0">
+                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-sm font-black text-black shadow-lg flex-shrink-0">
                     {hire.avatar}
                   </div>
                   <div className="min-w-0">
-                    <h4 className="text-base font-bold text-white truncate">{hire.name}</h4>
-                    <p className="text-xs text-neutral-400 font-medium truncate">{hire.role} • {hire.department}</p>
+                    <h4 className="text-base font-bold text-black truncate">{hire.name}</h4>
+                    <p className="text-xs text-gray-600 font-medium truncate">{hire.role} • {hire.department}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-6">
                   {/* Progress Bar Mini */}
                   <div className="hidden sm:flex flex-col items-end gap-1 w-32">
-                    <span className="text-xs font-bold text-neutral-300">{overallProgress}% Complete</span>
-                    <div className="h-1.5 w-full bg-neutral-700 rounded-full overflow-hidden">
+                    <span className="text-xs font-bold text-gray-700">{overallProgress}% Complete</span>
+                    <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-blue-500 transition-all duration-500 ease-out rounded-full"
                         style={{ width: `${overallProgress}%` }}
@@ -103,7 +103,7 @@ export const OnboardingChecklist: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="text-neutral-500 flex-shrink-0">
+                  <div className="text-gray-500 flex-shrink-0">
                     {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </div>
@@ -117,12 +117,12 @@ export const OnboardingChecklist: React.FC = () => {
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="border-t border-neutral-700/50"
+                    className="border-t border-gray-300/50"
                   >
-                    <div className="p-4 px-5 bg-neutral-900/50">
+                    <div className="p-4 px-5 bg-white shadow-sm/50">
                       <div className="flex justify-between items-center mb-4">
-                        <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Tasks to Complete</p>
-                        <p className="text-xs text-neutral-400">Joining: <span className="text-white font-medium">{hire.joinDate}</span></p>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Tasks to Complete</p>
+                        <p className="text-xs text-gray-600">Joining: <span className="text-black font-medium">{hire.joinDate}</span></p>
                       </div>
                       
                       <div className="space-y-2">
@@ -133,13 +133,13 @@ export const OnboardingChecklist: React.FC = () => {
                             <div 
                               key={step.id} 
                               onClick={() => toggleStep(hire.id, step.id)}
-                              className="group flex items-center justify-between p-3 rounded-lg border border-neutral-800 bg-neutral-800/40 hover:bg-neutral-700 cursor-pointer transition-colors"
+                              className="group flex items-center justify-between p-3 rounded-lg border border-gray-200 bg-gray-100/40 hover:bg-gray-200 cursor-pointer transition-colors"
                             >
                               <div className="flex items-center gap-3">
                                 {getStatusIcon(status)}
                                 <span className={cn(
                                   "text-sm font-medium transition-colors",
-                                  status === "completed" ? "text-neutral-500 line-through" : "text-white group-hover:text-blue-300"
+                                  status === "completed" ? "text-gray-500 line-through" : "text-black group-hover:text-blue-300"
                                 )}>
                                   {step.label}
                                 </span>
@@ -148,7 +148,7 @@ export const OnboardingChecklist: React.FC = () => {
                                 "text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md",
                                 status === "completed" ? "bg-emerald-500/10 text-emerald-400" :
                                 status === "in-progress" ? "bg-amber-500/10 text-amber-400" :
-                                "bg-neutral-700 text-neutral-400"
+                                "bg-gray-200 text-gray-600"
                               )}>
                                 {status.replace('-', ' ')}
                               </span>

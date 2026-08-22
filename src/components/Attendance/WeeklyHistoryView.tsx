@@ -31,7 +31,7 @@ export const WeeklyHistoryView = () => {
       case 'LATE': return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
       case 'ABSENT': return 'text-red-400 bg-red-400/10 border-red-400/20';
       case 'HALF_DAY': return 'text-orange-400 bg-orange-400/10 border-orange-400/20';
-      default: return 'text-zinc-400 bg-zinc-800 border-zinc-700';
+      default: return 'text-gray-500 bg-gray-50 border-gray-200';
     }
   };
 
@@ -40,14 +40,14 @@ export const WeeklyHistoryView = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-4xl w-full text-white shadow-2xl"
+      className="bg-white shadow-xl border border-gray-200 rounded-3xl p-8 max-w-4xl w-full text-black shadow-2xl"
     >
       <h3 className="text-2xl font-bold mb-6 tracking-tight">Recent Activity</h3>
       
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-zinc-800 text-zinc-500 uppercase tracking-wider text-xs">
+            <tr className="border-b border-gray-200 text-zinc-500 uppercase tracking-wider text-xs">
               <th className="pb-4 font-semibold">Date</th>
               <th className="pb-4 font-semibold">Check In</th>
               <th className="pb-4 font-semibold">Check Out</th>
@@ -67,13 +67,13 @@ export const WeeklyHistoryView = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
                   key={record.id} 
-                  className="border-b border-zinc-800 last:border-0 hover:bg-zinc-800/50 transition-colors"
+                  className="border-b border-gray-200 last:border-0 hover:bg-gray-50/50 transition-colors"
                 >
                   <td className="py-4 font-medium">
                     {new Date(record.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </td>
-                  <td className="py-4 text-zinc-400">{formatTime(record.checkInTime)}</td>
-                  <td className="py-4 text-zinc-400">{formatTime(record.checkOutTime)}</td>
+                  <td className="py-4 text-gray-500">{formatTime(record.checkInTime)}</td>
+                  <td className="py-4 text-gray-500">{formatTime(record.checkOutTime)}</td>
                   <td className="py-4">
                     <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full border ${getStatusColor(record.status)}`}>
                       {record.status}

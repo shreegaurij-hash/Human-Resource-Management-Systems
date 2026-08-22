@@ -29,39 +29,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
   }, [mouseX, mouseY]);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-black font-sans overflow-hidden relative selection:bg-yellow-300 selection:text-black">
-      {/* Fluid Bubble Background */}
-      <motion.div
-        style={{
-          x: springX,
-          y: springY,
-        }}
-        className="pointer-events-none fixed top-0 left-0 w-[500px] h-[500px] bg-yellow-300/80 rounded-full blur-[80px] z-0 mix-blend-multiply transition-transform duration-700 ease-out"
-      />
-      {/* Secondary stationary bubble for effect */}
-      <div className="absolute -bottom-[20%] -right-[10%] w-[800px] h-[800px] bg-yellow-200/60 rounded-full blur-[100px] pointer-events-none z-0" />
-
-      {/* Navigation */}
-      <nav className="flex justify-between items-center p-8 absolute w-full z-20">
-        <div className="text-3xl font-extrabold tracking-tighter text-black flex items-center gap-2">
-          <div className="w-8 h-8 bg-black rounded-full grid place-items-center">
-             <div className="w-4 h-4 bg-white rounded-full"></div>
-          </div>
-          dayflow
-        </div>
-        <div className="hidden md:flex items-center gap-8 font-medium">
-          <button className="hover:opacity-60 transition-opacity">Solutions ˅</button>
-          <button className="hover:opacity-60 transition-opacity">Work</button>
-          <button className="hover:opacity-60 transition-opacity">About us</button>
-          <button 
-            onClick={() => setShowLogin(true)}
-            className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold shadow-lg"
-          >
-            Get started
-          </button>
-        </div>
-      </nav>
-
+    <div className="pt-40 relative">
       {/* Main Content Area */}
       <main className="relative z-10 pt-40 px-8 max-w-7xl mx-auto min-h-screen flex flex-col">
         {/* Hero Headline */}
@@ -102,7 +70,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
               <div className="font-bold text-green-900 mb-2">Leave Tracker</div>
               <div className="text-xs text-green-800">Optimize time off dynamically.</div>
             </div>
-            <div className="absolute top-0 left-40 w-56 h-80 bg-zinc-800 text-white rounded-xl shadow-2xl p-4 transition-transform hover:-translate-y-4 hover:z-30 z-20">
+            <div className="absolute top-0 left-40 w-56 h-80 bg-zinc-800 text-black rounded-xl shadow-2xl p-4 transition-transform hover:-translate-y-4 hover:z-30 z-20">
               <div className="font-bold mb-2">Attendance</div>
               <div className="text-xs text-zinc-400">Scan and log directly.</div>
             </div>
