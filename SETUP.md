@@ -43,11 +43,10 @@ Navigate to `http://localhost:3000` in your browser.
 ## Login Details
 For testing the app, you can use the following default credentials.
 
-**Admin / HR Portal:**
+**Admin & HR Login:**
 - **Email:** `hr.admin01@dayflow.com`
 - **Password:** `Dayflow@Admin01!`
 
-**Employee Portal:**
-- **Email:** `E001@blond.com`
-- **Password:** `password123`
-*(Or any other generated employee email/password from your seed).*
+**Employee Login:**
+- **Email:** `adinolfi.wilson.k@dayflow.com`
+- **Password:** `Dayflow@10026`
