@@ -15,6 +15,7 @@ import {
   mockAdminActivity,
   mockAdminNotifications,
 } from "../mockData";
+import { OnboardingChecklist } from "./OnboardingChecklist";
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 function cn(...classes: (string | undefined | false)[]) {
@@ -409,7 +410,12 @@ export function AdminDashboard() {
           </SectionCard>
         </motion.div>
 
-        {/* ── Row 5: Activity + Quick Access ── */}
+        {/* ── Row 5: Onboarding Checklist ── */}
+        <motion.div variants={itemVariants}>
+          <OnboardingChecklist />
+        </motion.div>
+
+        {/* ── Row 6: Activity + Quick Access ── */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
           {/* Recent HR Activity */}
