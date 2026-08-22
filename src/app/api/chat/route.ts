@@ -1,13 +1,19 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
 
+    // Read key directly from file to bypass dev server cache issues
+    const keyPath = path.join(process.cwd(), 'groq-api.key');
+    const apiKey = fs.readFileSync(keyPath, 'utf8').trim();
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -28,7 +34,7 @@ export async function POST(req: Request) {
         const fallbackResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+            'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
