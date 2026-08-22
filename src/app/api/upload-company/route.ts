@@ -36,24 +36,32 @@ export async function POST(req: Request) {
       const { PrismaClient } = require('@prisma/client');
       const prisma = new PrismaClient();
       
-      // Delete existing employees (except admins perhaps? Actually, just wipe users to re-onboard)
-      await prisma.user.deleteMany({});
-      
       const usersToInsert = parsedData.map(d => ({
         empId: d.EmpID || `EMP-${Math.floor(Math.random()*10000)}`,
         name: d.Employee_Name || d.Admin_Name || "Unknown",
         email: d.Email,
-        password: d.Password || "Dayflow@123!",
+        password: d.Password || "Blond@123!",
         role: d.Role && d.Role.includes("Admin") ? "ADMIN" : "EMPLOYEE",
         department: d.Department || "General",
         designation: d.Position || d.Role || "Staff",
       })).filter(u => u.email); // Only insert rows with emails
 
-      // Insert all
+      // Insert all without wiping existing data
       for (const user of usersToInsert) {
         try {
-          await prisma.user.create({ data: user });
-        } catch(e) {}
+          // Use upsert to prevent duplicate emails from crashing, and just update if they exist
+          await prisma.user.upsert({
+            where: { email: user.email },
+            update: {
+              name: user.name,
+              department: user.department,
+              designation: user.designation
+            },
+            create: user,
+          });
+        } catch(e) {
+           console.error("Failed to upsert user", user.email, e);
+        }
       }
       await prisma.$disconnect();
     } catch (dbError) {
@@ -70,13 +78,13 @@ export async function POST(req: Request) {
       const positions = [...new Set(parsedData.map(d => d.Position || d.position).filter(Boolean))];
       
       const prompt = `
-A new company has just onboarded their workforce dataset into the Dayflow HRMS.
+A new company has just onboarded their workforce dataset into the Blond HRMS.
 Here is the data summary:
 - Total Employees: ${parsedData.length}
 - Departments: ${departments.join(', ')}
 - Example Roles: ${positions.slice(0, 5).join(', ')}
 
-Provide a very enthusiastic, professional 3-sentence summary analyzing this company's workforce and welcoming them to Dayflow.
+Provide a very enthusiastic, professional 3-sentence summary analyzing this company's workforce and welcoming them to Blond.
 `;
 
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -86,9 +94,9 @@ Provide a very enthusiastic, professional 3-sentence summary analyzing this comp
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'openai/gpt-oss-120b',
+          model: 'llama-3.1-8b-instant', // using a real, fast model
           messages: [
-            { role: "system", content: "You are Dayflow AI, the smart HR assistant." },
+            { role: "system", content: "You are Blond AI, the smart HR assistant." },
             { role: 'user', content: prompt }
           ],
           temperature: 0.5
