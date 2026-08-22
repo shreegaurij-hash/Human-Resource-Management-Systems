@@ -1,11 +1,18 @@
 import { NextResponse } from 'next/server';
-import dataset from '@/data/dataset.json';
-import adminLogins from '@/data/admin_logins.json';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(request: Request) {
   try {
     const { email, password, role } = await request.json();
     
+    // Read datasets dynamically so file uploads take effect instantly without server restart
+    const adminPath = path.join(process.cwd(), 'src', 'data', 'admin_logins.json');
+    const datasetPath = path.join(process.cwd(), 'src', 'data', 'dataset.json');
+    
+    const adminLogins = JSON.parse(fs.readFileSync(adminPath, 'utf8'));
+    const dataset = JSON.parse(fs.readFileSync(datasetPath, 'utf8'));
+
     if (role === 'Admin') {
       // Authenticate against Admin Logins sheet
       const admin = adminLogins.find((a: any) => a.Email === email && a.Password === password);
@@ -44,6 +51,8 @@ export async function POST(request: Request) {
       });
     }
   } catch (error) {
+    console.error("LOGIN ERROR:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+

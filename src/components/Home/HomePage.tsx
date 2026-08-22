@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
+import { DatasetUploader } from './DatasetUploader';
 
 interface HomePageProps {
   onLogin?: (role: 'Admin' | 'Employee') => void;
@@ -215,6 +216,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           </div>
         </div>
       </section>
+
+      {/* Dataset Uploader Section */}
+      <DatasetUploader />
 
       {/* Login Modal Overlay */}
       <AnimatePresence>
