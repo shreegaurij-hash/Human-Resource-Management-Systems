@@ -1,119 +1,169 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 interface HomePageProps {
-  onLogin: (role: 'Admin' | 'Employee') => void;
+  onLogin?: (role: 'Admin' | 'Employee') => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
   const [showLogin, setShowLogin] = useState(false);
+  
+  // Fluid bubble tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Spring config for smooth follow
+  const springX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Offset by half the bubble size to center it on cursor
+      mouseX.set(e.clientX - 250);
+      mouseY.set(e.clientY - 250);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans overflow-hidden">
+    <div className="min-h-screen bg-[#F8F9FA] text-black font-sans overflow-hidden relative selection:bg-yellow-300 selection:text-black">
+      {/* Fluid Bubble Background */}
+      <motion.div
+        style={{
+          x: springX,
+          y: springY,
+        }}
+        className="pointer-events-none fixed top-0 left-0 w-[500px] h-[500px] bg-yellow-300/80 rounded-full blur-[80px] z-0 mix-blend-multiply transition-transform duration-700 ease-out"
+      />
+      {/* Secondary stationary bubble for effect */}
+      <div className="absolute -bottom-[20%] -right-[10%] w-[800px] h-[800px] bg-yellow-200/60 rounded-full blur-[100px] pointer-events-none z-0" />
+
       {/* Navigation */}
-      <nav className="flex justify-between items-center p-8 absolute w-full z-10">
-        <div className="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500">
-          DAYFLOW.
+      <nav className="flex justify-between items-center p-8 absolute w-full z-20">
+        <div className="text-3xl font-extrabold tracking-tighter text-black flex items-center gap-2">
+          <div className="w-8 h-8 bg-black rounded-full grid place-items-center">
+             <div className="w-4 h-4 bg-white rounded-full"></div>
+          </div>
+          dayflow
         </div>
-        <button
-          onClick={() => setShowLogin(true)}
-          className="px-6 py-2 rounded-full border border-zinc-700 hover:border-pink-500 transition-colors font-semibold"
-        >
-          Sign In
-        </button>
+        <div className="hidden md:flex items-center gap-8 font-medium">
+          <button className="hover:opacity-60 transition-opacity">Solutions ˅</button>
+          <button className="hover:opacity-60 transition-opacity">Work</button>
+          <button className="hover:opacity-60 transition-opacity">About us</button>
+          <button 
+            onClick={() => setShowLogin(true)}
+            className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold shadow-lg"
+          >
+            Get started
+          </button>
+        </div>
       </nav>
 
-      {/* Hero Section */}
-      <main className="flex flex-col items-center justify-center min-h-screen text-center px-4 relative z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-pink-600/20 to-yellow-600/20 blur-[120px] rounded-full pointer-events-none" />
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+      {/* Main Content Area */}
+      <main className="relative z-10 pt-40 px-8 max-w-7xl mx-auto min-h-screen flex flex-col">
+        {/* Hero Headline */}
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-7xl md:text-9xl font-black tracking-tighter mb-6 leading-none"
+          transition={{ duration: 0.8 }}
+          className="text-7xl md:text-[7rem] font-bold tracking-tighter leading-[0.9] mb-32 uppercase max-w-4xl"
+          style={{ fontFamily: 'monospace' }}
         >
-          WORK,<br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">SIMPLIFIED.</span>
+          There is more<br />than meets the eye
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-xl md:text-2xl text-zinc-400 max-w-2xl mb-12 font-medium"
-        >
-          The all-in-one Human Resource Management System. From attendance tracking to automated payroll and seamless leave management.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="flex gap-4"
-        >
-          <button
-            onClick={() => setShowLogin(true)}
-            className="px-8 py-4 rounded-full bg-white text-black font-bold text-lg hover:scale-105 transition-transform"
+        {/* Lower Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-auto pb-20">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex flex-col justify-end max-w-md"
           >
-            Get Started
-          </button>
-          <button className="px-8 py-4 rounded-full bg-zinc-900 border border-zinc-800 text-white font-bold text-lg hover:bg-zinc-800 transition-colors">
-            Book Demo
-          </button>
-        </motion.div>
+            <p className="text-2xl font-bold mb-8 leading-snug">
+              Everything on the internet revolves around intelligence, efficiency, and optimization. And aesthetics matter too.
+            </p>
+            <p className="text-lg text-gray-700 leading-relaxed border-b border-black pb-1 inline-block w-fit">
+              At Dayflow, we design <span className="font-bold underline">HR solutions</span> and <span className="font-bold underline">smart software</span> based on this conviction.
+            </p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="relative h-96 w-full hidden md:block"
+          >
+            {/* Mocked Cards imitating the image */}
+            <div className="absolute top-10 left-0 w-48 h-64 bg-green-200 rounded-xl shadow-2xl p-4 transform -rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10">
+              <div className="font-bold text-green-900 mb-2">Leave Tracker</div>
+              <div className="text-xs text-green-800">Optimize time off dynamically.</div>
+            </div>
+            <div className="absolute top-0 left-40 w-56 h-80 bg-zinc-800 text-white rounded-xl shadow-2xl p-4 transition-transform hover:-translate-y-4 hover:z-30 z-20">
+              <div className="font-bold mb-2">Attendance</div>
+              <div className="text-xs text-zinc-400">Scan and log directly.</div>
+            </div>
+            <div className="absolute top-20 right-0 w-48 h-64 bg-blue-100 rounded-xl shadow-2xl p-4 transform rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10">
+              <div className="font-bold text-blue-900 mb-2">Payroll AI</div>
+              <div className="text-xs text-blue-800">Smart salary computations.</div>
+            </div>
+          </motion.div>
+        </div>
       </main>
 
       {/* Login Modal Overlay */}
       <AnimatePresence>
         {showLogin && (
-          <motion.div
+          <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/40 backdrop-blur-md z-50 flex items-center justify-center p-4"
           >
-            <motion.div
+            <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl w-full max-w-md relative overflow-hidden"
+              className="bg-white border border-gray-200 p-8 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl"
             >
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-pink-500/20 blur-[50px] rounded-full" />
-
-              <button
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-yellow-300/40 blur-[40px] rounded-full" />
+              
+              <button 
                 onClick={() => setShowLogin(false)}
-                className="absolute top-6 right-6 text-zinc-500 hover:text-white"
+                className="absolute top-6 right-6 text-gray-500 hover:text-black font-bold"
               >
                 ✕
               </button>
 
-              <h2 className="text-3xl font-black mb-2">Welcome Back</h2>
-              <p className="text-zinc-400 mb-8 font-medium">Select your portal to continue.</p>
+              <h2 className="text-3xl font-black mb-2 tracking-tight">Welcome Back</h2>
+              <p className="text-gray-500 mb-8 font-medium">Select your portal to continue.</p>
 
               <div className="space-y-4">
-                <button
-                  onClick={() => onLogin('Employee')}
-                  className="w-full p-4 rounded-xl border border-zinc-700 bg-zinc-800/50 hover:bg-zinc-800 hover:border-pink-500 transition-all text-left group flex justify-between items-center"
+                <button 
+                  onClick={() => onLogin?.('Employee')}
+                  className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
                 >
                   <div>
-                    <div className="font-bold text-lg text-white group-hover:text-pink-500 transition-colors">Employee Portal</div>
-                    <div className="text-sm text-zinc-500">Access leave, attendance, and profile</div>
+                    <div className="font-bold text-lg text-black">Employee Portal</div>
+                    <div className="text-sm text-gray-500 mt-1">Access leave, attendance, and profile</div>
                   </div>
-                  <div className="text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity">→</div>
+                  <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
                 </button>
-
-                <button
-                  onClick={() => onLogin('Admin')}
-                  className="w-full p-4 rounded-xl border border-zinc-700 bg-zinc-800/50 hover:bg-zinc-800 hover:yellow-500 transition-all text-left group flex justify-between items-center hover:border-yellow-500"
+                
+                <button 
+                  onClick={() => onLogin?.('Admin')}
+                  className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
                 >
                   <div>
-                    <div className="font-bold text-lg text-white group-hover:text-yellow-500 transition-colors">Admin / HR Portal</div>
-                    <div className="text-sm text-zinc-500">Manage payroll and approvals</div>
+                    <div className="font-bold text-lg text-black">Admin / HR Portal</div>
+                    <div className="text-sm text-gray-500 mt-1">Manage payroll and approvals</div>
                   </div>
-                  <div className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity">→</div>
+                  <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
                 </button>
               </div>
-
             </motion.div>
           </motion.div>
         )}
