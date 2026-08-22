@@ -29,7 +29,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
   }, [mouseX, mouseY]);
 
   return (
-    <div className="pt-40 relative">
+    <div className="pt-8 relative">
+      {/* Navigation */}
+      <nav className="flex justify-between items-center px-8 absolute w-full z-50">
+        <a href="/" className="text-3xl font-extrabold tracking-tighter text-black flex items-center gap-2">
+          <div className="w-8 h-8 bg-black rounded-full grid place-items-center">
+             <div className="w-4 h-4 bg-white rounded-full"></div>
+          </div>
+          dayflow
+        </a>
+        <div className="hidden md:flex items-center gap-8 font-medium">
+          <button className="hover:opacity-60 transition-opacity">Solutions ˅</button>
+          <button className="hover:opacity-60 transition-opacity">Work</button>
+          <button className="hover:opacity-60 transition-opacity">About us</button>
+          <button 
+            onClick={() => setShowLogin(true)}
+            className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold shadow-lg"
+          >
+            Get started
+          </button>
+        </div>
+      </nav>
+
       {/* Main Content Area */}
       <main className="relative z-10 pt-40 px-8 max-w-7xl mx-auto min-h-screen flex flex-col">
         {/* Hero Headline */}
@@ -81,6 +102,79 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           </motion.div>
         </div>
       </main>
+
+      {/* Showcase Section */}
+      <section className="relative z-10 py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-16">
+          {/* Column 1: For Employees */}
+          <div>
+            <h2 className="text-4xl font-semibold mb-4 text-center">For Employees</h2>
+            <p className="text-gray-600 text-center mb-12 max-w-md mx-auto">
+              Empower your workforce with intuitive tools to seamlessly manage their time, attendance, and profile. No hassle, no fuss.
+            </p>
+            <div className="space-y-4">
+              {/* Item 1 */}
+              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                </div>
+                <div className="px-6 flex-1 text-lg text-black">Profile & Settings</div>
+                <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
+              </div>
+              {/* Item 2 */}
+              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <div className="px-6 flex-1 text-lg text-black">Time Off Requests</div>
+                <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
+              </div>
+              {/* Item 3 */}
+              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div className="px-6 flex-1 text-lg text-black">Attendance Logs</div>
+                <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 2: For Admins */}
+          <div>
+            <h2 className="text-4xl font-semibold mb-4 text-center">For Admins & HR</h2>
+            <p className="text-gray-600 text-center mb-12 max-w-md mx-auto">
+              What do we strive for? Setting up smart systems that help HR teams move forward and pay for themselves immediately.
+            </p>
+            <div className="space-y-4">
+              {/* Item 1 */}
+              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                </div>
+                <div className="px-6 flex-1 text-lg text-black">Payroll Generation</div>
+                <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
+              </div>
+              {/* Item 2 */}
+              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div className="px-6 flex-1 text-lg text-black">Approve Requests</div>
+                <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
+              </div>
+              {/* Item 3 */}
+              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+                <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
+                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                </div>
+                <div className="px-6 flex-1 text-lg text-black">Admin Dashboards</div>
+                <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Login Modal Overlay */}
       <AnimatePresence>
