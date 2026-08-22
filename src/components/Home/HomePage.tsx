@@ -98,10 +98,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-7xl md:text-[6rem] font-bold tracking-tighter leading-[1.1] mb-32 max-w-5xl"
+          className="text-7xl md:text-[7rem] font-bold tracking-tighter leading-[0.95] mb-24 max-w-5xl uppercase"
           style={{ fontFamily: 'monospace' }}
         >
-          CONNECTING PEOPLE.<br />STREAMLINING WORK.
+          Connecting<br />
+          <span className="font-serif italic font-medium lowercase text-zinc-800 tracking-normal" style={{ fontFamily: 'ui-serif, Georgia, serif' }}>people.</span><br />
+          Streamlining<br />
+          <span className="font-serif italic font-medium lowercase text-zinc-800 tracking-normal" style={{ fontFamily: 'ui-serif, Georgia, serif' }}>work.</span>
         </motion.h1>
 
         {/* Lower Section */}
