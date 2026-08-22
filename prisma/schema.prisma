@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------------------------------
+// Core User Models
+// ----------------------------------------------------------------------------
+
+enum Role {
+  EMPLOYEE
+  ADMIN
+  MANAGER
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String
+  email          String    @unique
+  image          String?
+  role           Role      @default(EMPLOYEE)
+  department     String?
+  designation    String?
+  
+  // Relations
+  attendance     AttendanceRecord[]
+  leaveRequests  LeaveRequest[]
+  payrollRecords PayrollRecord[]
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+// ----------------------------------------------------------------------------
+// Attendance Module (Karan's domain)
+// ----------------------------------------------------------------------------
+
+model AttendanceRecord {
+  id            String    @id @default(cuid())
+  userId        String
+  date          DateTime  @db.Date
+  checkIn       DateTime
+  checkOut      DateTime?
+  status        String    // e.g., "Present", "Late", "Half-day"
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([userId, date]) // One record per user per day
+  @@index([userId])
+}
+
+// ----------------------------------------------------------------------------
+// Leave Management (Rishik's domain)
+// ----------------------------------------------------------------------------
+
+enum LeaveType {
+  PAID
+  SICK
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model LeaveRequest {
+  id            String      @id @default(cuid())
+  userId        String
+  type          LeaveType
+  startDate     DateTime    @db.Date
+  endDate       DateTime    @db.Date
+  reason        String      @db.Text
+  status        LeaveStatus @default(PENDING)
+  
+  // Approver logic
+  approvedById  String?
+  
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  @@index([userId])
+}
+
+// ----------------------------------------------------------------------------
+// Payroll Module (Ninaad's domain)
+// ----------------------------------------------------------------------------
+
+enum PaymentStatus {
+  PENDING
+  PROCESSED
+  PAID
+}
+
+model PayrollRecord {
+  id            String        @id @default(cuid())
+  userId        String
+  month         Int           // 1-12
+  year          Int
+  
+  baseSalary    Float
+  deductions    Float         @default(0)
+  bonuses       Float         @default(0)
+  netPay        Float
+  
+  status        PaymentStatus @default(PENDING)
+  
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@unique([userId, month, year])
+  @@index([userId])
+}
