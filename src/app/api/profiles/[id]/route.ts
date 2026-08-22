@@ -14,12 +14,14 @@ mockProfileDB.set("user-123", {
   joinDate: "2023-01-15T00:00:00.000Z",
 });
 
+// Next.js 15+: params is a Promise
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const profile = mockProfileDB.get(params.id);
-  
+  const { id } = await params;
+  const profile = mockProfileDB.get(id);
+
   if (!profile) {
     return new NextResponse("Profile not found", { status: 404 });
   }
@@ -29,17 +31,18 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const body = await request.json();
-  const existingProfile = mockProfileDB.get(params.id);
+  const existingProfile = mockProfileDB.get(id);
 
   if (!existingProfile) {
     return new NextResponse("Profile not found", { status: 404 });
   }
 
   const updatedProfile = { ...existingProfile, ...body };
-  mockProfileDB.set(params.id, updatedProfile);
+  mockProfileDB.set(id, updatedProfile);
 
   return NextResponse.json(updatedProfile);
 }

@@ -1,3 +1,4 @@
+/// <reference types="@testing-library/jest-dom" />
 import { render, screen } from '@testing-library/react'
 import { QuickAccessCard } from '../QuickAccessCard'
 import { Users } from 'lucide-react'
@@ -11,7 +12,7 @@ describe('QuickAccessCard', () => {
         icon={Users}
       />
     )
-    
+
     expect(screen.getByText('Total Headcount')).toBeInTheDocument()
     expect(screen.getByText('2,451')).toBeInTheDocument()
   })
@@ -26,7 +27,7 @@ describe('QuickAccessCard', () => {
         description="vs last month"
       />
     )
-    
+
     expect(screen.getByText('+12%')).toBeInTheDocument()
     expect(screen.getByText('vs last month')).toBeInTheDocument()
   })
