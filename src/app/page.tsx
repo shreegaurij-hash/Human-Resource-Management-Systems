@@ -5,6 +5,6 @@ import { useRouter } from 'next/navigation';
 export default function Page() {
   const router = useRouter();
   return (
-    <HomePage onLogin={(role) => router.push(`/portal/${role}`)} />
+    <HomePage onLogin={(role) => router.push(`/portal/${role.toLowerCase()}`)} />
   );
 }
