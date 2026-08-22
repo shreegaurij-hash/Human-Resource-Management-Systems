@@ -121,17 +121,6 @@ export function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<"All" | "Present" | "Absent" | "On Leave">("All");
 
-  if (!isLoaded) return null;
-
-  const mockAdmin = user ? {
-    name: user.name || "Admin",
-    role: "HR Director",
-    initials: user.name ? user.name.split(" ").map((n: string) => n[0]).join("").substring(0, 2) : "AD",
-  } : {
-    name: "Sarah Jenkins",
-    role: "HR Director",
-    initials: "SJ",
-  };
   const [showNotifs, setShowNotifs] = useState(false);
   const [leaveActions, setLeaveActions] = useState<Record<string, "Approved" | "Rejected" | null>>(
     () => Object.fromEntries(mockPendingLeaves.map(l => [l.id, null]))
@@ -147,6 +136,18 @@ export function AdminDashboard() {
       return matchSearch && matchStatus;
     });
   }, [search, filterStatus]);
+
+  if (!isLoaded) return null;
+
+  const mockAdmin = user ? {
+    name: user.name || "Admin",
+    role: "HR Director",
+    initials: user.name ? user.name.split(" ").map((n: string) => n[0]).join("").substring(0, 2) : "AD",
+  } : {
+    name: "Sarah Jenkins",
+    role: "HR Director",
+    initials: "SJ",
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
