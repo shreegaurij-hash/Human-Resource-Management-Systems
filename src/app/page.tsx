@@ -6,9 +6,18 @@ import { LeaveManagement } from '@/components/Leave/LeaveManagement';
 import { EmployeePayrollView } from '@/components/Payroll/EmployeePayrollView';
 import { AdminPortal } from '@/components/Admin/AdminPortal';
 
+type EmployeeTab = 'Leave' | 'Payroll';
+
 export default function Page() {
   const [userRole, setUserRole] = useState<'Guest' | 'Employee' | 'Admin'>('Guest');
-  const [employeeTab, setEmployeeTab] = useState<'Leave' | 'Payroll'>('Leave');
+  const [employeeTab, setEmployeeTab] = useState<EmployeeTab>('Leave');
+
+  const handleLogin = (role: 'Admin' | 'Employee', initialTab?: EmployeeTab) => {
+    if (role === 'Employee' && initialTab) {
+      setEmployeeTab(initialTab);
+    }
+    setUserRole(role);
+  };
 
   if (userRole === 'Admin') {
     return <AdminPortal onBackToHome={() => setUserRole('Guest')} />;
@@ -77,9 +86,7 @@ export default function Page() {
 
   return (
     <HomePage
-      onLogin={(role) => {
-        setUserRole(role);
-      }}
+      onLogin={handleLogin}
     />
   );
 }
