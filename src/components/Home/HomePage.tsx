@@ -100,7 +100,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-7xl md:text-[7rem] font-bold tracking-tighter leading-[0.95] mb-24 max-w-5xl uppercase"
+          className="text-7xl md:text-[7rem] font-bold tracking-tighter leading-[1.1] mb-24 max-w-5xl uppercase"
           style={{ fontFamily: 'monospace' }}
         >
           Connecting<br />
