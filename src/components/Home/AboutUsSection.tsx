@@ -38,17 +38,20 @@ export const AboutUsSection = () => {
 
         {/* Paragraph Text */}
         <div className="max-w-3xl">
-          <motion.p 
+          <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-600 font-medium leading-relaxed"
           >
-            <strong className="text-black">Blond</strong> is a workforce management platform designed to simplify the way organizations manage their people and everyday operations.<br/><br/>
-            From attendance and leave to payroll and workforce analytics, we bring HR processes together in one connected platform. Our AI-driven insights help HR teams identify patterns, spot anomalies and make better-informed decisions, while giving employees a simple, intuitive way to manage their workday.<br/><br/>
-            <strong className="text-black">One platform. Better visibility. Smarter workforce management.</strong>
-          </motion.p>
+            <p className="text-xl text-gray-700 font-medium mb-8">
+              <strong className="text-black">Blond</strong> is a workforce management platform designed to simplify the way organizations manage their people and everyday operations.
+            </p>
+
+            <p className="text-xl text-black font-bold">
+              One platform. Better visibility. Smarter workforce management.
+            </p>
+          </motion.div>
         </div>
 
       </div>
