@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       const prisma = new PrismaClient();
       
       const usersToInsert = parsedData.map(d => ({
-        empId: d.EmpID || `EMP-${Math.floor(Math.random()*10000)}`,
+        empId: d.EmpID ? String(d.EmpID) : `EMP-${Math.floor(Math.random()*10000)}`,
         name: d.Employee_Name || d.Admin_Name || "Unknown",
         email: d.Email,
         password: d.Password || "Blond@123!",
