@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { DatasetUploader } from './DatasetUploader';
+import { AboutUsSection } from './AboutUsSection';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 interface HomePageProps {
@@ -100,9 +101,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           className="text-7xl md:text-[6rem] font-bold tracking-tighter leading-[1.1] mb-32 max-w-5xl"
           style={{ fontFamily: 'monospace' }}
         >
-          The work behind the work<br />
-          Behind every workday.<br />
-          Because work doesn't clock out.
+          CONNECTING PEOPLE.<br />STREAMLINING WORK.
         </motion.h1>
 
         {/* Lower Section */}
@@ -128,21 +127,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
             className="relative h-96 w-full hidden md:block"
           >
             {/* Mocked Cards imitating the image */}
-            <div className="absolute top-10 left-0 w-48 h-64 bg-green-200 rounded-xl shadow-2xl p-4 transform -rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10">
-              <div className="font-bold text-green-900 mb-2">Leave Tracker</div>
-              <div className="text-xs text-green-800">Optimize time off dynamically.</div>
+            <div className="absolute top-10 left-0 w-48 h-64 rounded-xl shadow-2xl p-4 transform -rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10 flex flex-col justify-between" style={{ backgroundImage: 'url(/leave_tracker.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+              <div>
+                <div className="font-bold text-black bg-white/70 backdrop-blur-md px-2 py-1 rounded-md inline-block mb-1 shadow-sm">Leave Tracker</div>
+                <div className="text-xs text-black font-medium bg-white/70 backdrop-blur-md px-2 py-1 rounded-md inline-block shadow-sm">Optimize time off.</div>
+              </div>
             </div>
-            <div className="absolute top-0 left-40 w-56 h-80 bg-zinc-800 text-black rounded-xl shadow-2xl p-4 transition-transform hover:-translate-y-4 hover:z-30 z-20">
-              <div className="font-bold mb-2">Attendance</div>
-              <div className="text-xs text-zinc-400">Scan and log directly.</div>
+            
+            <div className="absolute top-0 left-40 w-56 h-80 rounded-xl shadow-2xl p-4 transition-transform hover:-translate-y-4 hover:z-30 z-20 flex flex-col justify-between border-2 border-zinc-700" style={{ backgroundImage: 'url(/attendance.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+              <div>
+                <div className="font-bold text-white bg-black/60 backdrop-blur-md px-2 py-1 rounded-md inline-block mb-1 shadow-sm border border-zinc-700">Attendance</div>
+                <div className="text-xs text-white font-medium bg-black/60 backdrop-blur-md px-2 py-1 rounded-md inline-block shadow-sm border border-zinc-700">Scan and log directly.</div>
+              </div>
             </div>
-            <div className="absolute top-20 right-0 w-48 h-64 bg-blue-100 rounded-xl shadow-2xl p-4 transform rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10">
-              <div className="font-bold text-blue-900 mb-2">Payroll AI</div>
-              <div className="text-xs text-blue-800">Smart salary computations.</div>
+            
+            <div className="absolute top-20 right-0 w-48 h-64 rounded-xl shadow-2xl p-4 transform rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10 flex flex-col justify-between" style={{ backgroundImage: 'url(/payroll.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+              <div>
+                <div className="font-bold text-black bg-white/70 backdrop-blur-md px-2 py-1 rounded-md inline-block mb-1 shadow-sm">Payroll AI</div>
+                <div className="text-xs text-black font-medium bg-white/70 backdrop-blur-md px-2 py-1 rounded-md inline-block shadow-sm">Smart salary computes.</div>
+              </div>
             </div>
           </motion.div>
         </div>
       </main>
+
+      {/* About Us Section */}
+      <AboutUsSection />
 
       {/* Showcase Section */}
       <section className="relative z-10 py-32 bg-white">

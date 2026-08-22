@@ -51,14 +51,14 @@ export const DatasetUploader = () => {
   const preventDefault = (e: React.DragEvent) => e.preventDefault();
 
   return (
-    <section className="py-20 bg-gray-50 border-t border-gray-200">
+    <section className="relative z-10 py-32 bg-zinc-950 border-t border-zinc-900">
       <div className="max-w-4xl mx-auto px-8 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-bold mb-6">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 text-yellow-500 rounded-full text-sm font-bold mb-6">
           <Sparkles size={16} />
           <span>Onboard Your Company</span>
         </div>
-        <h2 className="text-3xl font-black mb-4">Migrate to Dayflow Instantly</h2>
-        <p className="text-gray-500 font-medium mb-8">
+        <h2 className="text-4xl font-black mb-4 text-white">Migrate to Dayflow Instantly</h2>
+        <p className="text-zinc-400 font-medium mb-12">
           Drag and drop your company's employee dataset (.xlsx, .csv). Our AI will instantly map your workforce and generate secure login credentials for your entire team.
         </p>
 
@@ -66,12 +66,12 @@ export const DatasetUploader = () => {
           onDragOver={preventDefault}
           onDragEnter={preventDefault}
           onDrop={handleDrop}
-          className={`relative border-2 border-dashed rounded-3xl p-12 flex flex-col items-center justify-center cursor-pointer transition-all ${
+          className={`relative border-2 border-dashed rounded-3xl p-16 flex flex-col items-center justify-center cursor-pointer transition-all ${
             isUploading 
-              ? 'border-yellow-400 bg-yellow-50' 
+              ? 'border-yellow-400 bg-yellow-500/10' 
               : uploadSuccess 
-                ? 'border-emerald-400 bg-emerald-50' 
-                : 'border-gray-300 bg-white hover:border-black hover:bg-gray-50'
+                ? 'border-emerald-400 bg-emerald-500/10' 
+                : 'border-zinc-800 bg-zinc-900 hover:border-yellow-500 hover:bg-zinc-800'
           }`}
         >
           <input type="file" accept=".xlsx,.xls,.csv,.json" className="hidden" onChange={handleDrop} />
@@ -80,28 +80,28 @@ export const DatasetUploader = () => {
             {isUploading ? (
               <motion.div key="uploading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center">
                 <Loader2 size={48} className="animate-spin text-yellow-500 mb-4" />
-                <p className="text-lg font-bold text-black">Analyzing workforce data with Groq AI...</p>
+                <p className="text-xl font-bold text-white">Analyzing workforce data with Groq AI...</p>
               </motion.div>
             ) : uploadSuccess ? (
               <motion.div key="success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center">
                 <CheckCircle2 size={48} className="text-emerald-500 mb-4" />
-                <p className="text-lg font-bold text-black mb-2">Company Onboarded Successfully!</p>
-                <div className="bg-white/60 p-4 rounded-xl border border-emerald-100 text-sm text-emerald-900 font-medium max-w-lg text-left">
+                <p className="text-xl font-bold text-white mb-2">Company Onboarded Successfully!</p>
+                <div className="bg-zinc-950/60 p-6 rounded-xl border border-emerald-900/50 text-sm text-emerald-400 font-medium max-w-lg text-left">
                   {analysis}
                 </div>
               </motion.div>
             ) : (
               <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center">
-                <FileSpreadsheet size={48} className="text-gray-300 mb-4" />
-                <p className="text-lg font-bold text-black mb-1">Click or drag dataset here</p>
-                <p className="text-sm text-gray-400">Supports .xlsx, .csv, and .json</p>
+                <FileSpreadsheet size={48} className="text-zinc-600 mb-4" />
+                <p className="text-xl font-bold text-white mb-1">Click or drag dataset here</p>
+                <p className="text-sm text-zinc-500">Supports .xlsx, .csv, and .json</p>
               </motion.div>
             )}
           </AnimatePresence>
         </label>
 
         {error && (
-          <div className="mt-4 p-4 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm font-bold">
+          <div className="mt-6 p-4 bg-red-950 text-red-400 border border-red-900 rounded-xl text-sm font-bold">
             {error}
           </div>
         )}

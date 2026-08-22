@@ -26,7 +26,7 @@ export function FluidBackground() {
           x: springX,
           y: springY,
         }}
-        className="pointer-events-none fixed top-0 left-0 w-[500px] h-[500px] bg-yellow-300/80 rounded-full blur-[80px] z-0 mix-blend-multiply transition-transform duration-700 ease-out"
+        className="pointer-events-none fixed top-0 left-0 w-[500px] h-[500px] bg-[#FCEF3B]/50 rounded-full blur-[80px] z-0 transition-transform duration-700 ease-out"
       />
       <div className="fixed -bottom-[20%] -right-[10%] w-[800px] h-[800px] bg-yellow-200/60 rounded-full blur-[100px] pointer-events-none z-0" />
     </>
