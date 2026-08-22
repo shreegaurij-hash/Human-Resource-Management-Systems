@@ -76,7 +76,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           <div className="w-8 h-8 bg-black rounded-full grid place-items-center">
              <div className="w-4 h-4 bg-white rounded-full"></div>
           </div>
-          dayflow
+          blond
         </a>
         <div className="hidden md:flex items-center gap-8 font-medium">
           <button className="hover:opacity-60 transition-opacity">Solutions ˅</button>
@@ -116,7 +116,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
               Everything on the internet revolves around intelligence, efficiency, and optimization. And aesthetics matter too.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed border-b border-black pb-1 inline-block w-fit">
-              At Dayflow, we design <span className="font-bold underline">HR solutions</span> and <span className="font-bold underline">smart software</span> based on this conviction.
+              At Blond, we design <span className="font-bold underline">HR solutions</span> and <span className="font-bold underline">smart software</span> based on this conviction.
             </p>
           </motion.div>
 
@@ -137,13 +137,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
             <div className="absolute top-0 left-40 w-56 h-80 rounded-xl shadow-2xl p-4 transition-transform hover:-translate-y-4 hover:z-30 z-20 flex flex-col justify-between border-2 border-zinc-700" style={{ backgroundImage: 'url(/attendance.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
               <div>
                 <div className="font-bold text-white bg-black/60 backdrop-blur-md px-2 py-1 rounded-md inline-block mb-1 shadow-sm border border-zinc-700">Attendance</div>
-                <div className="text-xs text-white font-medium bg-black/60 backdrop-blur-md px-2 py-1 rounded-md inline-block shadow-sm border border-zinc-700">Scan and log directly.</div>
+                <div className="text-xs text-white font-medium bg-black/60 backdrop-blur-md px-2 py-1 rounded-md inline-block shadow-sm border border-zinc-700">Log in efficiently.</div>
               </div>
             </div>
             
             <div className="absolute top-20 right-0 w-48 h-64 rounded-xl shadow-2xl p-4 transform rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10 flex flex-col justify-between" style={{ backgroundImage: 'url(/payroll.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
               <div>
-                <div className="font-bold text-black bg-white/70 backdrop-blur-md px-2 py-1 rounded-md inline-block mb-1 shadow-sm">Payroll AI</div>
+                <div className="font-bold text-black bg-white/70 backdrop-blur-md px-2 py-1 rounded-md inline-block mb-1 shadow-sm">Payroll Management</div>
                 <div className="text-xs text-black font-medium bg-white/70 backdrop-blur-md px-2 py-1 rounded-md inline-block shadow-sm">Smart salary computes.</div>
               </div>
             </div>
@@ -301,7 +301,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
                         type="email" 
                         required
                         className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-black focus:bg-white transition-all text-black font-medium"
-                        placeholder="you@dayflow.com"
+                        placeholder="you@blond.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />

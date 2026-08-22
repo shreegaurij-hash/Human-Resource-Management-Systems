@@ -5,7 +5,7 @@ import { FluidBackground } from '@/components/Home/FluidBackground';
 import { ChatbotPopup } from '@/components/Chatbot/ChatbotPopup';
 
 export const metadata = {
-  title: 'Dayflow HRMS',
+  title: 'Blond HRMS',
   description: 'Human Resource Management System',
 };
 

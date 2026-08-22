@@ -27,9 +27,38 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unsupported file type. Please upload .xlsx, .csv, or .json' }, { status: 400 });
     }
 
-    // Write to dataset.json
+    // Write to dataset.json as a backup
     const datasetPath = path.join(process.cwd(), 'src', 'data', 'dataset.json');
     fs.writeFileSync(datasetPath, JSON.stringify(parsedData, null, 2), 'utf-8');
+
+    // Insert into Prisma Database
+    try {
+      const { PrismaClient } = require('@prisma/client');
+      const prisma = new PrismaClient();
+      
+      // Delete existing employees (except admins perhaps? Actually, just wipe users to re-onboard)
+      await prisma.user.deleteMany({});
+      
+      const usersToInsert = parsedData.map(d => ({
+        empId: d.EmpID || `EMP-${Math.floor(Math.random()*10000)}`,
+        name: d.Employee_Name || d.Admin_Name || "Unknown",
+        email: d.Email,
+        password: d.Password || "Dayflow@123!",
+        role: d.Role && d.Role.includes("Admin") ? "ADMIN" : "EMPLOYEE",
+        department: d.Department || "General",
+        designation: d.Position || d.Role || "Staff",
+      })).filter(u => u.email); // Only insert rows with emails
+
+      // Insert all
+      for (const user of usersToInsert) {
+        try {
+          await prisma.user.create({ data: user });
+        } catch(e) {}
+      }
+      await prisma.$disconnect();
+    } catch (dbError) {
+      console.error("Prisma insertion failed:", dbError);
+    }
 
     // Get API key for AI analysis
     const apiKey = process.env.GROQ_API_KEY;

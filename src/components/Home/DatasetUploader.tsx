@@ -57,7 +57,7 @@ export const DatasetUploader = () => {
           <Sparkles size={16} />
           <span>Onboard Your Company</span>
         </div>
-        <h2 className="text-4xl font-black mb-4 text-white">Migrate to Dayflow Instantly</h2>
+        <h2 className="text-4xl font-black mb-4 text-white">Migrate to Blond Instantly</h2>
         <p className="text-zinc-400 font-medium mb-12">
           Drag and drop your company's employee dataset (.xlsx, .csv). Our AI will instantly map your workforce and generate secure login credentials for your entire team.
         </p>
