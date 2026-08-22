@@ -17,6 +17,7 @@ import {
 } from "../mockData";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { OnboardingChecklist } from "./OnboardingChecklist";
+import { CandidateScreener } from "@/components/Admin/CandidateScreener";
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 function cn(...classes: (string | undefined | false)[]) {
@@ -427,6 +428,11 @@ export function AdminDashboard() {
         {/* ── Row 5: Onboarding Checklist ── */}
         <motion.div variants={itemVariants}>
           <OnboardingChecklist />
+        </motion.div>
+
+        {/* ── Row 5.5: AI Candidate Screener ── */}
+        <motion.div variants={itemVariants}>
+          <CandidateScreener />
         </motion.div>
 
         {/* ── Row 6: Activity + Quick Access ── */}
