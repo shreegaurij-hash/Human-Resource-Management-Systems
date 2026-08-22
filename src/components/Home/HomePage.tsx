@@ -105,14 +105,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
         </motion.h1>
 
         {/* Lower Section */}
-        <div className="flex flex-col md:flex-row justify-between items-end gap-16 mt-auto pb-20 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-[60%_40%] gap-8 mt-auto pb-20 w-full items-end">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col justify-end flex-1"
+            className="flex flex-col justify-end"
           >
-            <p className="text-xl md:text-2xl font-bold mb-8 leading-snug whitespace-normal md:whitespace-nowrap">
+            <p className="text-xl lg:text-2xl font-bold mb-8 leading-snug">
               Everything on the internet revolves around intelligence, efficiency, and optimization. And aesthetics matter too.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed border-b border-black pb-1 inline-block w-fit">
@@ -124,7 +124,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative h-96 w-full hidden md:block md:w-[450px] shrink-0"
+            className="relative h-96 w-full hidden md:block"
           >
             {/* Mocked Cards imitating the image */}
             <div className="absolute top-10 left-0 w-48 h-64 rounded-xl shadow-2xl p-4 transform -rotate-6 transition-transform hover:rotate-0 hover:z-30 z-10 flex flex-col justify-between" style={{ backgroundImage: 'url(/leave_tracker.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
