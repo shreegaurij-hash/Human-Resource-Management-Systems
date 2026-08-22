@@ -64,6 +64,15 @@ export async function POST(req: Request) {
         }
       }
       await prisma.$disconnect();
+
+      // Write credentials CSV for admin download
+      const csvLines = ["Name,Email,Password,Role"];
+      usersToInsert.forEach(u => {
+        csvLines.push(`${u.name},${u.email},${u.password},${u.role}`);
+      });
+      const credsPath = path.join(process.cwd(), 'public', 'credentials.csv');
+      fs.writeFileSync(credsPath, csvLines.join('\n'), 'utf-8');
+
     } catch (dbError) {
       console.error("Prisma insertion failed:", dbError);
     }
