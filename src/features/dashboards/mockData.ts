@@ -127,3 +127,60 @@ export const mockAdminNotifications = [
   { id: 2, message: "14 employees are absent today. 3 without notice.", type: "error", time: "2h ago" },
   { id: 3, message: "Monthly attendance report is ready to download.", type: "info", time: "1d ago" },
 ];
+
+export const mockOnboardingSteps = [
+  { id: "bg-check", label: "Background Check" },
+  { id: "doc-verify", label: "Document Verification" },
+  { id: "it-setup", label: "IT & Hardware Setup" },
+  { id: "contract", label: "Contract Signed" },
+  { id: "orientation", label: "Orientation Scheduled" }
+];
+
+export const mockOnboardingList = [
+  {
+    id: "OB-001",
+    name: "Sana Khan",
+    department: "Marketing",
+    role: "Content Strategist",
+    joinDate: "Sep 1, 2026",
+    avatar: "SK",
+    progress: {
+      "bg-check": "completed",
+      "doc-verify": "completed",
+      "it-setup": "in-progress",
+      "contract": "pending",
+      "orientation": "pending"
+    }
+  },
+  {
+    id: "OB-002",
+    name: "Aarav Patel",
+    department: "Engineering",
+    role: "Frontend Engineer",
+    joinDate: "Sep 5, 2026",
+    avatar: "AP",
+    progress: {
+      "bg-check": "completed",
+      "doc-verify": "pending",
+      "it-setup": "pending",
+      "contract": "completed",
+      "orientation": "pending"
+    }
+  },
+  {
+    id: "OB-003",
+    name: "Rohan Desai",
+    department: "Finance",
+    role: "Financial Analyst",
+    joinDate: "Sep 10, 2026",
+    avatar: "RD",
+    progress: {
+      "bg-check": "pending",
+      "doc-verify": "pending",
+      "it-setup": "pending",
+      "contract": "pending",
+      "orientation": "pending"
+    }
+  }
+];
+
