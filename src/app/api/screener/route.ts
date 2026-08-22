@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
 export async function POST(req: Request) {
   try {
@@ -10,14 +8,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing Job Description or Resume Text' }, { status: 400 });
     }
 
-    // Read key directly from file
-    const keyPath = path.join(process.cwd(), 'groq-api.key');
-    let apiKey = '';
-    try {
-      apiKey = fs.readFileSync(keyPath, 'utf8').trim();
-    } catch (e) {
-      apiKey = process.env.GROQ_API_KEY || '';
-    }
+    const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json({ error: 'Groq API key not found.' }, { status: 500 });

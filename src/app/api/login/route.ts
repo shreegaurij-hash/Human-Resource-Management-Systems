@@ -12,8 +12,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    // Role-based auth (for now, any valid user can log into their chosen portal, but in reality we'd restrict Admins)
-    // We'll let them pass through to demonstrate the UI
+    // Role-based auth restriction
+    const dept = user.Department.trim();
+    if (role === 'Admin' && dept !== 'Admin Offices' && dept !== 'Executive Office') {
+      return NextResponse.json({ error: 'Access denied: You do not have administrative privileges.' }, { status: 403 });
+    }
+
     return NextResponse.json({ 
       user: {
         id: user.EmpID,

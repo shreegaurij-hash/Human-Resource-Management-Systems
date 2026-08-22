@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
-
-    // Read key directly from file to bypass dev server cache issues
-    const keyPath = path.join(process.cwd(), 'groq-api.key');
-    const apiKey = fs.readFileSync(keyPath, 'utf8').trim();
+    
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey) {
+      throw new Error("GROQ_API_KEY is not defined in environment variables");
+    }
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -53,6 +52,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(data);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("CHAT API ERROR:", error);
+    return NextResponse.json({ error: error.message || "Unknown error" }, { status: 500 });
   }
 }
