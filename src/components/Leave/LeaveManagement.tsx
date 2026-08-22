@@ -69,8 +69,9 @@ export const LeaveManagement: React.FC = () => {
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-gray-400 mb-2">Leave Type</label>
+              <label htmlFor="leaveType" className="block text-sm font-semibold text-gray-400 mb-2">Leave Type</label>
               <select
+                id="leaveType"
                 value={leaveType}
                 onChange={(e) => setLeaveType(e.target.value as LeaveType)}
                 className="w-full bg-zinc-800 text-white rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500"
@@ -83,8 +84,9 @@ export const LeaveManagement: React.FC = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-400 mb-2">Start Date</label>
+                <label htmlFor="startDate" className="block text-sm font-semibold text-gray-400 mb-2">Start Date</label>
                 <input
+                  id="startDate"
                   type="date"
                   required
                   value={startDate}
@@ -93,8 +95,9 @@ export const LeaveManagement: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-400 mb-2">End Date</label>
+                <label htmlFor="endDate" className="block text-sm font-semibold text-gray-400 mb-2">End Date</label>
                 <input
+                  id="endDate"
                   type="date"
                   required
                   value={endDate}
@@ -105,8 +108,9 @@ export const LeaveManagement: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-400 mb-2">Reason</label>
+              <label htmlFor="reason" className="block text-sm font-semibold text-gray-400 mb-2">Reason</label>
               <textarea
+                id="reason"
                 required
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
