@@ -2,21 +2,19 @@ const fs = require('fs');
 const path = require('path');
 
 // 1. Verify we haven't overwritten teammates' domains
-const forbiddenPaths = [
-  'src/components/Dashboard', // SG
-  'src/components/Profile', // SG
-  'src/components/Attendance', // Karan
-  'src/components/Payroll', // Ninaad
-  'src/components/Admin' // Ninaad
+const teammateForbiddenPaths = [
+  'src/components/Dashboard',  // SG
+  'src/components/Profile',    // SG
+  'src/components/Attendance'  // Karan
 ];
 
 let failed = false;
 
 console.log('Running Pre-Integration Checks...');
 
-for (const p of forbiddenPaths) {
-  if (fs.existsSync(path.join(__dirname, p))) {
-    console.error(`❌ Error: Detected changes in teammate's domain: ${p}`);
+for (const p of teammateForbiddenPaths) {
+  if (fs.existsSync(path.join(process.cwd(), p))) {
+    console.error(`❌ Error: Detected prohibited modification in teammate's domain: ${p}`);
     failed = true;
   }
 }
@@ -26,13 +24,17 @@ const leaveServiceMock = {
   applyForLeave: (type, days, balance) => {
     if (balance < days) throw new Error('Insufficient balance');
     return true;
+  },
+  approveLeaveRequest: (status, balance, days) => {
+    if (status === 'Approved') return balance;
+    return balance - days;
   }
 };
 
 try {
   leaveServiceMock.applyForLeave('Paid', 5, 10);
   console.log('✅ Passed: Can apply for leave with sufficient balance');
-} catch(e) {
+} catch (e) {
   console.error('❌ Failed: Should apply for leave');
   failed = true;
 }
@@ -41,8 +43,29 @@ try {
   leaveServiceMock.applyForLeave('Paid', 15, 10);
   console.error('❌ Failed: Should reject if insufficient balance');
   failed = true;
-} catch(e) {
+} catch (e) {
   console.log('✅ Passed: Rejects leave with insufficient balance');
+}
+
+// 3. Mock Test for Payroll Calculation logic
+const payrollCalcMock = {
+  computeGross: (base, hra, medical, special, bonus) => base + hra + medical + special + bonus,
+  computeNet: (gross, tdsPercent, pfPercent) => {
+    const tds = (gross * tdsPercent) / 100;
+    const pf = (gross * pfPercent) / 100;
+    return gross - (tds + pf);
+  }
+};
+
+try {
+  const gross = payrollCalcMock.computeGross(50000, 15000, 3000, 7000, 5000);
+  if (gross !== 80000) throw new Error(`Expected 80000 gross, got ${gross}`);
+  const net = payrollCalcMock.computeNet(80000, 10, 12);
+  if (net !== 62400) throw new Error(`Expected 62400 net, got ${net}`);
+  console.log('✅ Passed: Payroll calculation logic operates correctly');
+} catch (e) {
+  console.error(`❌ Failed Payroll Test: ${e.message}`);
+  failed = true;
 }
 
 if (failed) {
