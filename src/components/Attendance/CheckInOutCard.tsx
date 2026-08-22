@@ -1,28 +1,42 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { attendanceService } from '../../services/attendanceService';
 
 type Status = 'IDLE' | 'CHECKED_IN' | 'CHECKED_OUT';
 
 export const CheckInOutCard = () => {
+  const employeeId = 'emp-1'; // Match Rishik's mock
   const [status, setStatus] = useState<Status>('IDLE');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleAction = async () => {
-    setLoading(true);
-    try {
-      const endpoint = status === 'IDLE' ? '/api/attendance/check-in' : '/api/attendance/check-out';
-      const res = await fetch(endpoint, { method: 'POST' });
-      
-      if (res.ok) {
-        setStatus(status === 'IDLE' ? 'CHECKED_IN' : 'CHECKED_OUT');
+  useEffect(() => {
+    // Initial fetch to determine state
+    const today = attendanceService.getTodayRecord(employeeId);
+    if (today) {
+      if (today.checkOutTime) {
+        setStatus('CHECKED_OUT');
       } else {
-        const error = await res.json();
-        alert(error.error || 'Something went wrong');
+        setStatus('CHECKED_IN');
       }
-    } catch (err) {
-      alert('Network error');
+    }
+  }, []);
+
+  const handleAction = () => {
+    setLoading(true);
+    setError('');
+    try {
+      if (status === 'IDLE') {
+        attendanceService.checkIn(employeeId);
+        setStatus('CHECKED_IN');
+      } else if (status === 'CHECKED_IN') {
+        attendanceService.checkOut(employeeId);
+        setStatus('CHECKED_OUT');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -34,13 +48,14 @@ export const CheckInOutCard = () => {
       animate={{ opacity: 1, y: 0 }}
       className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-sm w-full text-white shadow-2xl relative overflow-hidden"
     >
-      {/* Decorative gradient for Wink Digital Aesthetic */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500" />
 
       <h2 className="text-3xl font-extrabold tracking-tight mb-2">Today's Shift</h2>
-      <p className="text-zinc-400 mb-8 font-medium">
+      <p className="text-zinc-400 mb-6 font-medium">
         {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
       </p>
+
+      {error && <div className="bg-red-500/10 text-red-500 p-3 rounded-lg mb-4 text-sm font-semibold">{error}</div>}
 
       <div className="flex justify-center mb-6">
         <AnimatePresence mode="wait">

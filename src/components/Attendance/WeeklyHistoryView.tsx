@@ -2,35 +2,22 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-
-type AttendanceRecord = {
-  id: string;
-  date: string;
-  checkInTime: string;
-  checkOutTime: string | null;
-  status: 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY';
-  workHours: number | null;
-};
+import { attendanceService } from '../../services/attendanceService';
+import { AttendanceRecord } from '../../types/attendance';
 
 export const WeeklyHistoryView = () => {
+  const employeeId = 'emp-1';
   const [history, setHistory] = useState<AttendanceRecord[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const res = await fetch('/api/attendance/history?limit=7');
-        const data = await res.json();
-        if (data.data) {
-          setHistory(data.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch history', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchHistory();
+    // Poll the service every 2 seconds to simulate reactivity if the CheckInOutCard updates it
+    const interval = setInterval(() => {
+      setHistory(attendanceService.getHistory(employeeId));
+    }, 2000);
+    
+    setHistory(attendanceService.getHistory(employeeId));
+    
+    return () => clearInterval(interval);
   }, []);
 
   const formatTime = (isoString: string | null) => {
@@ -48,16 +35,12 @@ export const WeeklyHistoryView = () => {
     }
   };
 
-  if (loading) {
-    return <div className="animate-pulse h-64 bg-zinc-900 rounded-3xl w-full max-w-4xl" />;
-  }
-
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="bg-black border border-zinc-800 rounded-3xl p-8 max-w-4xl w-full text-white shadow-2xl"
+      className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-4xl w-full text-white shadow-2xl"
     >
       <h3 className="text-2xl font-bold mb-6 tracking-tight">Recent Activity</h3>
       
@@ -84,7 +67,7 @@ export const WeeklyHistoryView = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
                   key={record.id} 
-                  className="border-b border-zinc-900 last:border-0 hover:bg-zinc-900/50 transition-colors"
+                  className="border-b border-zinc-800 last:border-0 hover:bg-zinc-800/50 transition-colors"
                 >
                   <td className="py-4 font-medium">
                     {new Date(record.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
