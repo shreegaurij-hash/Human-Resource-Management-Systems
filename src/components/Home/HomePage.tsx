@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { DatasetUploader } from './DatasetUploader';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 interface HomePageProps {
   onLogin?: (role: 'Admin' | 'Employee') => void;
@@ -11,7 +11,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
   const [showLogin, setShowLogin] = useState(false);
   
   // Real Auth States
-  const [loginRole, setLoginRole] = useState<'Admin' | 'Employee' | null>(null);
+  const [loginRole, setLoginRole] = useState<'Admin' | 'Employee'>('Employee');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -233,102 +233,99 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-white border border-gray-200 p-8 rounded-3xl w-full max-w-md relative overflow-hidden shadow-2xl"
+              className="bg-white border-2 border-gray-100 p-8 rounded-3xl w-full max-w-md relative shadow-2xl"
             >
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-yellow-300/40 blur-[40px] rounded-full" />
-              
               <button 
                 onClick={() => {
                   setShowLogin(false);
-                  setLoginRole(null);
+                  setLoginRole('Employee');
                   setLoginError('');
                 }}
-                className="absolute top-6 right-6 text-gray-500 hover:text-black font-bold z-10"
+                className="absolute top-6 right-6 text-gray-400 hover:text-black font-bold z-10 transition-colors"
               >
                 ✕
               </button>
 
-              {!loginRole ? (
-                <>
-                  <h2 className="text-3xl font-black mb-2 tracking-tight">Welcome Back</h2>
-                  <p className="text-gray-500 mb-8 font-medium">Select your portal to continue.</p>
+              <div className="mb-8">
+                <h2 className="text-4xl font-black mb-1 tracking-tight text-black">Sign In</h2>
+                <p className="text-gray-500 font-medium">Enter your credentials to continue</p>
+              </div>
 
-                  <div className="space-y-4">
-                    <button 
-                      onClick={() => setLoginRole('Employee')}
-                      className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
-                    >
-                      <div>
-                        <div className="font-bold text-lg text-black">Employee Portal</div>
-                        <div className="text-sm text-gray-500 mt-1">Access leave, attendance, and profile</div>
-                      </div>
-                      <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
-                    </button>
-                    
-                    <button 
-                      onClick={() => setLoginRole('Admin')}
-                      className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
-                    >
-                      <div>
-                        <div className="font-bold text-lg text-black">Admin / HR Portal</div>
-                        <div className="text-sm text-gray-500 mt-1">Manage payroll and approvals</div>
-                      </div>
-                      <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
-                    </button>
+              {/* Tabs */}
+              <div className="flex gap-8 border-b-2 border-gray-100 mb-8">
+                <button
+                  onClick={() => { setLoginRole('Employee'); setLoginError(''); }}
+                  className={`pb-3 text-sm font-bold tracking-wider transition-colors ${
+                    loginRole === 'Employee' 
+                      ? 'text-black border-b-4 border-yellow-400 -mb-[2px]' 
+                      : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                >
+                  EMPLOYEE
+                </button>
+                <button
+                  onClick={() => { setLoginRole('Admin'); setLoginError(''); }}
+                  className={`pb-3 text-sm font-bold tracking-wider transition-colors ${
+                    loginRole === 'Admin' 
+                      ? 'text-black border-b-4 border-yellow-400 -mb-[2px]' 
+                      : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                >
+                  ADMIN / HR
+                </button>
+              </div>
+
+              <form onSubmit={handleLoginSubmit}>
+                {loginError && (
+                  <div className="mb-6 p-4 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm font-bold">
+                    {loginError}
                   </div>
-                </>
-              ) : (
-                <form onSubmit={handleLoginSubmit} className="relative z-10">
-                  <button 
-                    type="button"
-                    onClick={() => { setLoginRole(null); setLoginError(''); }}
-                    className="text-sm font-bold text-gray-500 hover:text-black mb-6 flex items-center gap-1"
-                  >
-                    ← Back
-                  </button>
-                  <h2 className="text-3xl font-black mb-2 tracking-tight">{loginRole} Login</h2>
-                  <p className="text-gray-500 mb-8 font-medium">Sign in to your account.</p>
+                )}
 
-                  {loginError && (
-                    <div className="mb-4 p-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm font-bold">
-                      {loginError}
-                    </div>
-                  )}
-
-                  <div className="space-y-4 mb-8">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-1">Email</label>
+                <div className="space-y-5 mb-8">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                       <input 
                         type="email" 
                         required
-                        className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
+                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-black focus:bg-white transition-all text-black font-medium"
                         placeholder="you@dayflow.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-1">Password</label>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                    <div className="relative">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                       <input 
                         type="password" 
                         required
-                        className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
+                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-black focus:bg-white transition-all text-black font-medium"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
                   </div>
+                </div>
 
-                  <button 
-                    type="submit"
-                    disabled={isLoggingIn}
-                    className="w-full py-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-bold shadow-lg disabled:opacity-70"
-                  >
-                    {isLoggingIn ? 'Authenticating...' : 'Sign In'}
-                  </button>
-                </form>
-              )}
+                <button 
+                  type="submit"
+                  disabled={isLoggingIn}
+                  className="w-full py-4 bg-black text-white rounded-xl hover:bg-gray-800 transition-colors font-bold shadow-lg disabled:opacity-70 flex items-center justify-center gap-2"
+                >
+                  {isLoggingIn ? 'Authenticating...' : 'Login'}
+                  {!isLoggingIn && <ArrowRight size={20} />}
+                </button>
+              </form>
+
+              <div className="mt-8 text-center text-sm font-medium text-gray-500">
+                Don't have an account? <a href="#" className="text-black font-bold hover:underline">Sign up</a>
+              </div>
             </motion.div>
           </motion.div>
         )}
