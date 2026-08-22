@@ -23,13 +23,14 @@ Then, apply the database schema (this will create `dev.db`):
 npx prisma db push
 ```
 
-## 3. Seed Mock Data
-To populate the system with the initial set of employees and test data (e.g. Leave Requests, Onboarding), run the seed scripts:
-```bash
-# Seed initial users from Excel
-npm run seed
+## 3. Upload Employee Data
+To populate the system with your employees, you can directly upload an Excel file through the application:
+1. Start the application (see step 4).
+2. Log in using the Admin credentials (provided below).
+3. Navigate to the Employee Directory or Onboarding section and use the file upload feature to import your `.xlsx` or `.csv` file containing employee details.
 
-# Seed leave requests for testing the admin dashboard
+*(Optional)* To generate mock leave requests for testing the dashboard, run:
+```bash
 node seed-leaves.js
 ```
 
