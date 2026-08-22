@@ -1,0 +1,38 @@
+[
+  {
+    "Admin_Name": "HR Admin 01",
+    "Role": "Admin / HR Officer",
+    "Email": "hr.admin01@dayflow.com",
+    "Password": "Dayflow@Admin01!"
+  },
+  {
+    "Admin_Name": "HR Admin 02",
+    "Role": "Admin / HR Officer",
+    "Email": "hr.admin02@dayflow.com",
+    "Password": "Dayflow@Admin02!"
+  },
+  {
+    "Admin_Name": "HR Admin 03",
+    "Role": "Admin / HR Officer",
+    "Email": "hr.admin03@dayflow.com",
+    "Password": "Dayflow@Admin03!"
+  },
+  {
+    "Admin_Name": "HR Admin 04",
+    "Role": "Admin / HR Officer",
+    "Email": "hr.admin04@dayflow.com",
+    "Password": "Dayflow@Admin04!"
+  },
+  {
+    "Admin_Name": "HR Admin 05",
+    "Role": "Admin / HR Officer",
+    "Email": "hr.admin05@dayflow.com",
+    "Password": "Dayflow@Admin05!"
+  },
+  {
+    "Admin_Name": "HR Admin 06",
+    "Role": "Admin / HR Officer",
+    "Email": "hr.admin06@dayflow.com",
+    "Password": "Dayflow@Admin06!"
+  }
+]
