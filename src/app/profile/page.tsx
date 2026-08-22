@@ -10,7 +10,7 @@ export default function ProfilePage() {
   if (error || !profile) return <div className="p-8 text-red-500">Error loading profile</div>;
 
   return (
-    <div className="min-h-screen bg-black text-black p-8">
+    <div className="min-h-screen bg-[#F8F9FA] text-black p-8">
       <ProfileView profile={profile} onEdit={() => alert("Edit mode coming soon!")} />
     </div>
   );

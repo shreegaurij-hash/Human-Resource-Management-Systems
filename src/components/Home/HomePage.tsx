@@ -9,6 +9,44 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
   const [showLogin, setShowLogin] = useState(false);
   
+  // Real Auth States
+  const [loginRole, setLoginRole] = useState<'Admin' | 'Employee' | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError('');
+    
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role: loginRole })
+      });
+      
+      const data = await res.json();
+      if (!res.ok) {
+        setLoginError(data.error || 'Login failed');
+      } else {
+        // Save user context for the dashboards to read
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        
+        // For now, call the parent router hook.
+        if (onLogin && loginRole) {
+          onLogin(loginRole);
+        }
+      }
+    } catch (err) {
+      setLoginError('Network error. Please try again.');
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+  
   // Fluid bubble tracking
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -58,10 +96,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-7xl md:text-[7rem] font-bold tracking-tighter leading-[0.9] mb-32 uppercase max-w-4xl"
+          className="text-7xl md:text-[6rem] font-bold tracking-tighter leading-[1.1] mb-32 max-w-5xl"
           style={{ fontFamily: 'monospace' }}
         >
-          There is more<br />than meets the eye
+          The work behind the work<br />
+          Behind every workday.<br />
+          Because work doesn't clock out.
         </motion.h1>
 
         {/* Lower Section */}
@@ -194,38 +234,97 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-yellow-300/40 blur-[40px] rounded-full" />
               
               <button 
-                onClick={() => setShowLogin(false)}
-                className="absolute top-6 right-6 text-gray-500 hover:text-black font-bold"
+                onClick={() => {
+                  setShowLogin(false);
+                  setLoginRole(null);
+                  setLoginError('');
+                }}
+                className="absolute top-6 right-6 text-gray-500 hover:text-black font-bold z-10"
               >
                 ✕
               </button>
 
-              <h2 className="text-3xl font-black mb-2 tracking-tight">Welcome Back</h2>
-              <p className="text-gray-500 mb-8 font-medium">Select your portal to continue.</p>
+              {!loginRole ? (
+                <>
+                  <h2 className="text-3xl font-black mb-2 tracking-tight">Welcome Back</h2>
+                  <p className="text-gray-500 mb-8 font-medium">Select your portal to continue.</p>
 
-              <div className="space-y-4">
-                <button 
-                  onClick={() => onLogin?.('Employee')}
-                  className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
-                >
-                  <div>
-                    <div className="font-bold text-lg text-black">Employee Portal</div>
-                    <div className="text-sm text-gray-500 mt-1">Access leave, attendance, and profile</div>
+                  <div className="space-y-4">
+                    <button 
+                      onClick={() => setLoginRole('Employee')}
+                      className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
+                    >
+                      <div>
+                        <div className="font-bold text-lg text-black">Employee Portal</div>
+                        <div className="text-sm text-gray-500 mt-1">Access leave, attendance, and profile</div>
+                      </div>
+                      <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
+                    </button>
+                    
+                    <button 
+                      onClick={() => setLoginRole('Admin')}
+                      className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
+                    >
+                      <div>
+                        <div className="font-bold text-lg text-black">Admin / HR Portal</div>
+                        <div className="text-sm text-gray-500 mt-1">Manage payroll and approvals</div>
+                      </div>
+                      <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
+                    </button>
                   </div>
-                  <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
-                </button>
-                
-                <button 
-                  onClick={() => onLogin?.('Admin')}
-                  className="w-full p-5 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-white hover:border-black transition-all text-left group flex justify-between items-center shadow-sm hover:shadow-md"
-                >
-                  <div>
-                    <div className="font-bold text-lg text-black">Admin / HR Portal</div>
-                    <div className="text-sm text-gray-500 mt-1">Manage payroll and approvals</div>
+                </>
+              ) : (
+                <form onSubmit={handleLoginSubmit} className="relative z-10">
+                  <button 
+                    type="button"
+                    onClick={() => { setLoginRole(null); setLoginError(''); }}
+                    className="text-sm font-bold text-gray-500 hover:text-black mb-6 flex items-center gap-1"
+                  >
+                    ← Back
+                  </button>
+                  <h2 className="text-3xl font-black mb-2 tracking-tight">{loginRole} Login</h2>
+                  <p className="text-gray-500 mb-8 font-medium">Sign in to your account.</p>
+
+                  {loginError && (
+                    <div className="mb-4 p-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm font-bold">
+                      {loginError}
+                    </div>
+                  )}
+
+                  <div className="space-y-4 mb-8">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">Email</label>
+                      <input 
+                        type="email" 
+                        required
+                        className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
+                        placeholder="you@dayflow.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">Password</label>
+                      <input 
+                        type="password" 
+                        required
+                        className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-colors"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  <div className="text-black opacity-0 group-hover:opacity-100 transition-opacity font-bold">→</div>
-                </button>
-              </div>
+
+                  <button 
+                    type="submit"
+                    disabled={isLoggingIn}
+                    className="w-full py-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-bold shadow-lg disabled:opacity-70"
+                  >
+                    {isLoggingIn ? 'Authenticating...' : 'Sign In'}
+                  </button>
+                </form>
+              )}
             </motion.div>
           </motion.div>
         )}

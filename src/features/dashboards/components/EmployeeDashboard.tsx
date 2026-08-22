@@ -8,7 +8,6 @@ import {
   ChevronRight, Wallet
 } from "lucide-react";
 import {
-  mockEmployee,
   mockAttendance,
   mockAttendanceSummary,
   mockLeaveBalance,
@@ -16,6 +15,7 @@ import {
   mockRecentActivity,
   mockEmployeeNotifications,
 } from "../mockData";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 function cn(...classes: (string | undefined | false)[]) {
@@ -87,9 +87,29 @@ function QuickLink({ icon, label, href }: { icon: React.ReactNode; label: string
 // ── main component ──────────────────────────────────────────────────────────
 
 export function EmployeeDashboard() {
+  const { user, isLoaded } = useCurrentUser();
   const [checkedIn, setCheckedIn] = useState(mockAttendance.status === "Checked In");
   const [checkInTime, setCheckInTime] = useState(mockAttendance.checkIn);
   const [showNotifs, setShowNotifs] = useState(false);
+
+  if (!isLoaded) return null;
+
+  const mockEmployee = user ? {
+    id: user.id || "EMP-000",
+    name: user.name || "Unknown User",
+    role: user.position || "Employee",
+    department: user.department || "General",
+    initials: user.name ? user.name.split(" ").map((n: string) => n[0]).join("").substring(0, 2) : "UU",
+    email: user.email || "",
+  } : {
+    id: "EMP-2024-0042",
+    name: "Arjun Mehta",
+    role: "Senior Frontend Developer",
+    department: "Engineering",
+    initials: "AM",
+    email: "arjun.mehta@dayflow.in",
+  };
+
 
   const containerVariants = {
     hidden: { opacity: 0 },

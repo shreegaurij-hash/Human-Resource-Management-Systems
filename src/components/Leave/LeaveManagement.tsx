@@ -39,7 +39,7 @@ export const LeaveManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-black font-sans p-8">
+    <div className="min-h-screen bg-[#F8F9FA] text-black font-sans p-8">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -61,9 +61,9 @@ export const LeaveManagement: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 shadow-2xl"
+          className="bg-white shadow-xl p-8 rounded-2xl border border-gray-200 shadow-2xl"
         >
-          <h2 className="text-2xl font-bold mb-6 text-black border-b border-zinc-800 pb-4">Request Leave</h2>
+          <h2 className="text-2xl font-bold mb-6 text-black border-b border-gray-200 pb-4">Request Leave</h2>
           {error && <div className="bg-red-500/10 text-red-500 p-4 rounded-lg mb-4">{error}</div>}
           {success && <div className="bg-green-500/10 text-green-500 p-4 rounded-lg mb-4">{success}</div>}
           
@@ -74,7 +74,7 @@ export const LeaveManagement: React.FC = () => {
                 id="leaveType"
                 value={leaveType}
                 onChange={(e) => setLeaveType(e.target.value as LeaveType)}
-                className="w-full bg-zinc-800 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full bg-gray-100 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500"
               >
                 <option value="Paid">Paid Leave</option>
                 <option value="Sick">Sick Leave</option>
@@ -91,7 +91,7 @@ export const LeaveManagement: React.FC = () => {
                   required
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-zinc-800 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500 [color-scheme:dark]"
+                  className="w-full bg-gray-100 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500 [color-scheme:dark]"
                 />
               </div>
               <div>
@@ -102,7 +102,7 @@ export const LeaveManagement: React.FC = () => {
                   required
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full bg-zinc-800 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500 [color-scheme:dark]"
+                  className="w-full bg-gray-100 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500 [color-scheme:dark]"
                 />
               </div>
             </div>
@@ -115,7 +115,7 @@ export const LeaveManagement: React.FC = () => {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 rows={3}
-                className="w-full bg-zinc-800 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full bg-gray-100 text-black rounded-lg p-3 outline-none focus:ring-2 focus:ring-pink-500"
                 placeholder="Why do you need this leave?"
               />
             </div>
@@ -133,13 +133,13 @@ export const LeaveManagement: React.FC = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <h2 className="text-2xl font-bold mb-6 text-black border-b border-zinc-800 pb-4">Recent Requests</h2>
+          <h2 className="text-2xl font-bold mb-6 text-black border-b border-gray-200 pb-4">Recent Requests</h2>
           <div className="space-y-4">
             {requests.length === 0 ? (
               <p className="text-gray-500 italic">No leave requests found.</p>
             ) : (
               requests.map((req) => (
-                <div key={req.id} className="bg-zinc-900 p-5 rounded-xl border border-zinc-800 flex justify-between items-center">
+                <div key={req.id} className="bg-white shadow-xl p-5 rounded-xl border border-gray-200 flex justify-between items-center">
                   <div>
                     <div className="font-bold text-lg">{req.leaveType}</div>
                     <div className="text-sm text-gray-400">{req.startDate} to {req.endDate}</div>
