@@ -6,30 +6,21 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-// ----------------------------------------------------------------------------
-// Core User Models
-// ----------------------------------------------------------------------------
-
-enum Role {
-  EMPLOYEE
-  ADMIN
-  MANAGER
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
   id             String    @id @default(cuid())
+  empId          String?   @unique
   name           String
   email          String    @unique
+  password       String
   image          String?
-  role           Role      @default(EMPLOYEE)
+  role           String    @default("EMPLOYEE")
   department     String?
   designation    String?
   
-  // Relations
   attendance     AttendanceRecord[]
   leaveRequests  LeaveRequest[]
   payrollRecords PayrollRecord[]
@@ -38,53 +29,32 @@ model User {
   updatedAt      DateTime  @updatedAt
 }
 
-// ----------------------------------------------------------------------------
-// Attendance Module (Karan's domain)
-// ----------------------------------------------------------------------------
-
 model AttendanceRecord {
   id            String    @id @default(cuid())
   userId        String
-  date          DateTime  @db.Date
+  date          DateTime
   checkIn       DateTime
   checkOut      DateTime?
-  status        String    // e.g., "Present", "Late", "Half-day"
+  status        String    
   
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  @@unique([userId, date]) // One record per user per day
+  @@unique([userId, date])
   @@index([userId])
-}
-
-// ----------------------------------------------------------------------------
-// Leave Management (Rishik's domain)
-// ----------------------------------------------------------------------------
-
-enum LeaveType {
-  PAID
-  SICK
-  UNPAID
-}
-
-enum LeaveStatus {
-  PENDING
-  APPROVED
-  REJECTED
 }
 
 model LeaveRequest {
   id            String      @id @default(cuid())
   userId        String
-  type          LeaveType
-  startDate     DateTime    @db.Date
-  endDate       DateTime    @db.Date
-  reason        String      @db.Text
-  status        LeaveStatus @default(PENDING)
+  type          String      // PAID, SICK, UNPAID
+  startDate     DateTime
+  endDate       DateTime
+  reason        String
+  status        String      @default("PENDING") // PENDING, APPROVED, REJECTED
   
-  // Approver logic
   approvedById  String?
   
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -95,20 +65,10 @@ model LeaveRequest {
   @@index([userId])
 }
 
-// ----------------------------------------------------------------------------
-// Payroll Module (Ninaad's domain)
-// ----------------------------------------------------------------------------
-
-enum PaymentStatus {
-  PENDING
-  PROCESSED
-  PAID
-}
-
 model PayrollRecord {
   id            String        @id @default(cuid())
   userId        String
-  month         Int           // 1-12
+  month         Int           
   year          Int
   
   baseSalary    Float
@@ -116,7 +76,7 @@ model PayrollRecord {
   bonuses       Float         @default(0)
   netPay        Float
   
-  status        PaymentStatus @default(PENDING)
+  status        String        @default("PENDING") // PENDING, PROCESSED, PAID
   
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 

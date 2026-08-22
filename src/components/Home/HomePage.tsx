@@ -235,6 +235,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
       {/* About Us Section */}
       <AboutUsSection />
 
+      {/* Footer Section */}
+      <footer className="bg-black text-white py-16 px-8 relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 border-t border-zinc-800 pt-8">
+          <div className="text-2xl font-black tracking-tighter flex items-center gap-2">
+            <div className="w-6 h-6 bg-white rounded-full grid place-items-center">
+               <div className="w-3 h-3 bg-black rounded-full"></div>
+            </div>
+            blond
+          </div>
+          
+          <div className="text-zinc-400 text-sm flex flex-col gap-2 font-medium font-mono">
+            <p>Rishik M - <a href="mailto:r1sh1k@icloud.com" className="text-white hover:underline">r1sh1k@icloud.com</a></p>
+            <p>Shreegouri J Jahagirdar - <a href="mailto:shreegaurij@gmail.com" className="text-white hover:underline">shreegaurij@gmail.com</a></p>
+            <p>Ninaad P - <a href="mailto:ninaadkashyap2006@gmail.com" className="text-white hover:underline">ninaadkashyap2006@gmail.com</a></p>
+            <p>Karan urs k - <a href="mailto:karanurs30@gmail.com" className="text-white hover:underline">karanurs30@gmail.com</a></p>
+          </div>
+        </div>
+      </footer>
+
       {/* Login Modal Overlay */}
       <AnimatePresence>
         {showLogin && (
@@ -269,7 +288,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
               {/* Tabs */}
               <div className="flex gap-8 border-b-2 border-gray-100 mb-8">
                 <button
-                  onClick={() => { setLoginRole('Employee'); setLoginError(''); }}
+                  onClick={() => { 
+                    setLoginRole('Employee'); 
+                    setLoginError(''); 
+                    setEmail('');
+                    setPassword('');
+                  }}
+                  type="button"
                   className={`pb-3 text-sm font-bold tracking-wider transition-colors ${
                     loginRole === 'Employee' 
                       ? 'text-black border-b-4 border-yellow-400 -mb-[2px]' 
@@ -279,7 +304,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
                   EMPLOYEE
                 </button>
                 <button
-                  onClick={() => { setLoginRole('Admin'); setLoginError(''); }}
+                  onClick={() => { 
+                    setLoginRole('Admin'); 
+                    setLoginError(''); 
+                    setEmail('hr.admin01@dayflow.com');
+                    setPassword('Dayflow@Admin01!');
+                  }}
+                  type="button"
                   className={`pb-3 text-sm font-bold tracking-wider transition-colors ${
                     loginRole === 'Admin' 
                       ? 'text-black border-b-4 border-yellow-400 -mb-[2px]' 

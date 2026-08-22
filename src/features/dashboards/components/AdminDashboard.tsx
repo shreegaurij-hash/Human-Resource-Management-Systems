@@ -116,18 +116,28 @@ function QuickLink({ icon, label, href }: { icon: React.ReactNode; label: string
 
 // ── main component ──────────────────────────────────────────────────────────
 
-export function AdminDashboard() {
+interface AdminDashboardProps {
+  employees?: any[];
+  pendingLeaves?: any[];
+}
+
+export function AdminDashboard({ employees, pendingLeaves }: AdminDashboardProps = {}) {
   const { user, isLoaded } = useCurrentUser();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<"All" | "Present" | "Absent" | "On Leave">("All");
-
   const [showNotifs, setShowNotifs] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(10);
+  
+  const leavesToUse = pendingLeaves || mockPendingLeaves;
+  
   const [leaveActions, setLeaveActions] = useState<Record<string, "Approved" | "Rejected" | null>>(
-    () => Object.fromEntries(mockPendingLeaves.map(l => [l.id, null]))
+    () => Object.fromEntries(leavesToUse.map((l: any) => [l.id, null]))
   );
 
+  const employeeListToUse = employees || mockEmployeeList;
+
   const filteredEmployees = useMemo(() => {
-    return mockEmployeeList.filter(emp => {
+    return employeeListToUse.filter(emp => {
       const matchSearch =
         emp.name.toLowerCase().includes(search.toLowerCase()) ||
         emp.id.toLowerCase().includes(search.toLowerCase()) ||
@@ -135,7 +145,7 @@ export function AdminDashboard() {
       const matchStatus = filterStatus === "All" || emp.status === filterStatus;
       return matchSearch && matchStatus;
     });
-  }, [search, filterStatus]);
+  }, [search, filterStatus, employeeListToUse]);
 
   if (!isLoaded) return null;
 
@@ -287,7 +297,10 @@ export function AdminDashboard() {
                   type="text"
                   placeholder="Search by name, ID, department…"
                   value={search}
-                  onChange={e => setSearch(e.target.value)}
+                  onChange={e => {
+                    setSearch(e.target.value);
+                    setVisibleCount(10);
+                  }}
                   className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-gray-100 border border-gray-300 text-sm text-black placeholder-neutral-500 outline-none focus:border-neutral-500 transition-colors"
                 />
               </div>
@@ -295,7 +308,10 @@ export function AdminDashboard() {
                 {(["All", "Present", "Absent", "On Leave"] as const).map(s => (
                   <button
                     key={s}
-                    onClick={() => setFilterStatus(s)}
+                    onClick={() => {
+                      setFilterStatus(s);
+                      setVisibleCount(10);
+                    }}
                     className={cn(
                       "px-3 py-2 rounded-xl text-xs font-bold transition-colors",
                       filterStatus === s
@@ -321,7 +337,7 @@ export function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-neutral-800/50">
                   <AnimatePresence>
-                    {filteredEmployees.map(emp => (
+                    {filteredEmployees.slice(0, visibleCount).map(emp => (
                       <motion.tr
                         key={emp.id}
                         initial={{ opacity: 0 }}
@@ -353,6 +369,16 @@ export function AdminDashboard() {
                   )}
                 </tbody>
               </table>
+              {visibleCount < filteredEmployees.length && (
+                <div className="mt-6 flex justify-center">
+                  <button
+                    onClick={() => setVisibleCount(prev => prev + 10)}
+                    className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-lg transition-colors shadow-sm border border-gray-200"
+                  >
+                    Show More ({filteredEmployees.length - visibleCount} remaining)
+                  </button>
+                </div>
+              )}
             </div>
           </SectionCard>
         </motion.div>
@@ -363,7 +389,7 @@ export function AdminDashboard() {
             title={`Pending Leave Requests ${pendingCount > 0 ? `(${pendingCount})` : ""}`}
           >
             <div className="space-y-4">
-              {mockPendingLeaves.map(req => {
+              {leavesToUse.map(req => {
                 const action = leaveActions[req.id];
                 return (
                   <div key={req.id} className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-gray-100/50 border border-gray-200">

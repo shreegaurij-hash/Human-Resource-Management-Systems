@@ -25,11 +25,11 @@ export const AboutUsSection = () => {
             style={{ fontFamily: 'monospace' }}
           >
             We build<br/>
-            <span className="text-[#FCEF3B]">
+            <span className="text-[#FCEF3B] italic font-serif lowercase font-medium tracking-normal" style={{ fontFamily: 'ui-serif, Georgia, serif' }}>
               intelligent
             </span><br/>
             HR technology<br/>
-            <span className="text-gray-400">for modern</span><br/>
+            <span className="text-gray-400 italic font-serif lowercase font-medium tracking-normal" style={{ fontFamily: 'ui-serif, Georgia, serif' }}>for modern</span><br/>
             organizations.
           </motion.h2>
         </div>

@@ -1,334 +1,226 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FileText, Download, TrendingUp, ChevronDown, Calendar, ArrowUpRight, ArrowDownRight, Wallet } from 'lucide-react';
+import Link from 'next/link';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { payrollService } from '../../services/payrollService';
-import { SalaryStructure, Payslip } from '../../types/payroll';
+import { Payslip } from '../../types/payroll';
 
-interface EmployeePayrollViewProps {
-  employeeId?: string;
-}
-
-export const EmployeePayrollView: React.FC<EmployeePayrollViewProps> = ({
-  employeeId = 'emp-1',
-}) => {
-  const [structure, setStructure] = useState<SalaryStructure | null>(null);
+export function EmployeePayrollView() {
+  const { user } = useCurrentUser();
+  const employeeId = user?.id || 'emp-1';
+  
   const [payslips, setPayslips] = useState<Payslip[]>([]);
   const [selectedPayslip, setSelectedPayslip] = useState<Payslip | null>(null);
 
   useEffect(() => {
     try {
-      const struct = payrollService.getSalaryStructure(employeeId);
-      setStructure(struct);
       const history = payrollService.getEmployeePayslips(employeeId);
       setPayslips(history);
+      if (history.length > 0) {
+        setSelectedPayslip(history[0]);
+      }
     } catch (e) {
       console.error(e);
     }
   }, [employeeId]);
 
-  if (!structure) {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  };
+
+  const itemVariants = {
+    hidden: { y: 10, opacity: 0 },
+    visible: { y: 0, opacity: 1 }
+  };
+
+  if (!selectedPayslip) {
     return (
-      <div className="p-8 text-gray-500">
-        Loading salary breakdown...
+      <div className="min-h-screen bg-[#F8F9FA] flex flex-col items-center justify-center p-8">
+        <Wallet size={48} className="text-gray-300 mb-4" />
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">No Payslips Found</h2>
+        <p className="text-gray-500 text-sm">We couldn't find any payslip records for your account.</p>
+        <Link href="/" className="mt-6 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+          Return to Dashboard
+        </Link>
       </div>
     );
   }
 
-  const { baseSalary, allowances, taxBracketPercentage, pfPercentage } = structure;
-  const grossEarnings =
-    baseSalary +
-    allowances.hra +
-    allowances.medical +
-    allowances.special +
-    allowances.performanceBonus;
-  const estimatedPf = Math.round((baseSalary * pfPercentage) / 100);
-  const estimatedTds = Math.round((grossEarnings * taxBracketPercentage) / 100);
-  const totalDeductions = estimatedPf + estimatedTds;
-  const estimatedNet = grossEarnings - totalDeductions;
-
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-black font-sans p-6 md:p-10">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-10"
-      >
-        <div className="flex items-center gap-3 mb-2">
-          <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full text-xs font-bold uppercase tracking-wider">
-            Employee View • Confidential
-          </span>
+    <div className="min-h-screen bg-[#F8F9FA] text-gray-900 font-sans selection:bg-blue-100 selection:text-blue-900 pb-20">
+      
+      {/* Top Navigation */}
+      <nav className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm mb-10">
+        <Link href="/" className="text-xl font-black tracking-tighter hover:opacity-70 transition-opacity">
+          blond
+        </Link>
+        <div className="flex items-center gap-6 text-sm font-semibold text-gray-500">
+          <Link href="/attendance" className="hover:text-gray-900 transition-colors">Attendance</Link>
+          <Link href="/leave" className="hover:text-gray-900 transition-colors">Leave</Link>
+          <Link href="/payroll" className="text-gray-900 border-b-2 border-blue-600 pb-0.5">Salary</Link>
+          <Link href="/profile" className="hover:text-gray-900 transition-colors">Profile</Link>
         </div>
-        <h1 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 uppercase tracking-tight">
-          My Compensation
-        </h1>
-        <p className="text-gray-500 font-medium">
-          Detailed breakdown of your salary structure, tax deductions, and monthly payslips.
-        </p>
-      </motion.div>
+      </nav>
 
-      {/* Salary Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-        <StatCard
-          label="Net Take-Home Salary"
-          value={`₹${estimatedNet.toLocaleString()}`}
-          subtext="Estimated monthly payout"
-          gradient="from-emerald-600 to-teal-700"
-        />
-        <StatCard
-          label="Gross Monthly Earnings"
-          value={`₹${grossEarnings.toLocaleString()}`}
-          subtext="Base + Allowances & Bonus"
-          gradient="from-cyan-600 to-blue-700"
-        />
-        <StatCard
-          label="Total Monthly Deductions"
-          value={`₹${totalDeductions.toLocaleString()}`}
-          subtext={`TDS (${taxBracketPercentage}%) + PF (${pfPercentage}%)`}
-          gradient="from-purple-600 to-indigo-700"
-        />
-        <StatCard
-          label="Base Fixed Pay"
-          value={`₹${baseSalary.toLocaleString()}`}
-          subtext="Annualized equivalent"
-          gradient="from-zinc-800 to-zinc-900 border border-gray-200"
-        />
-      </div>
-
-      {/* Main Grid: Breakdown & Payslip History */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* Left: Itemized Compensation Structure */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-white shadow-xl/90 border border-gray-200 p-8 rounded-3xl backdrop-blur shadow-2xl"
-        >
-          <h2 className="text-2xl font-bold text-black mb-6 border-b border-gray-200 pb-4 flex justify-between items-center">
-            <span>Salary Breakdown</span>
-            <span className="text-sm font-normal text-zinc-500">Fixed & Variable</span>
-          </h2>
-
-          <div className="space-y-6">
-            {/* Earnings Component List */}
-            <div>
-              <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-3">
-                Earnings Components
-              </h3>
-              <div className="space-y-3">
-                <BreakdownRow label="Basic Salary" amount={baseSalary} total={grossEarnings} color="bg-emerald-500" />
-                <BreakdownRow label="House Rent Allowance (HRA)" amount={allowances.hra} total={grossEarnings} color="bg-teal-400" />
-                <BreakdownRow label="Medical Allowance" amount={allowances.medical} total={grossEarnings} color="bg-cyan-400" />
-                <BreakdownRow label="Special Allowance" amount={allowances.special} total={grossEarnings} color="bg-blue-400" />
-                <BreakdownRow label="Performance Bonus" amount={allowances.performanceBonus} total={grossEarnings} color="bg-indigo-400" />
-              </div>
-            </div>
-
-            {/* Deductions Component List */}
-            <div className="pt-4 border-t border-gray-200">
-              <h3 className="text-sm font-bold text-rose-400 uppercase tracking-widest mb-3">
-                Standard Deductions
-              </h3>
-              <div className="space-y-3">
-                <BreakdownRow label={`Provident Fund (PF - ${pfPercentage}%)`} amount={estimatedPf} total={grossEarnings} color="bg-rose-500" isDeduction />
-                <BreakdownRow label={`Income Tax / TDS (${taxBracketPercentage}%)`} amount={estimatedTds} total={grossEarnings} color="bg-amber-500" isDeduction />
-              </div>
-            </div>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-5xl mx-auto px-6"
+      >
+        {/* Header */}
+        <motion.div variants={itemVariants} className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <span className="inline-block px-2.5 py-1 bg-blue-50 text-blue-700 text-[10px] font-semibold uppercase tracking-wider rounded-md mb-3 border border-blue-100">
+              Employee View • Confidential
+            </span>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-1">
+              My Compensation
+            </h1>
+            <p className="text-gray-500 font-medium text-sm">
+              Review and download your recent payslips.
+            </p>
           </div>
+          <button className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-semibold shadow-sm">
+            <Download size={16} />
+            Download YTD Report
+          </button>
         </motion.div>
 
-        {/* Right: Monthly Payslips History */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
-          <h2 className="text-2xl font-bold text-black mb-6 border-b border-gray-200 pb-4 flex justify-between items-center">
-            <span>Payslip History</span>
-            <span className="text-sm font-normal text-zinc-500">{payslips.length} Records Available</span>
-          </h2>
-
-          <div className="space-y-4">
-            {payslips.length === 0 ? (
-              <div className="bg-white shadow-xl/50 border border-gray-200 p-8 rounded-2xl text-center text-zinc-500 italic">
-                No past payslips generated yet.
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
+          
+          {/* Main Details */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            
+            {/* Top Net Pay Card */}
+            <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-2">Net Payable Salary</div>
+                <div className="text-4xl font-bold tracking-tight text-gray-900">₹{selectedPayslip.netPay.toLocaleString()}</div>
               </div>
-            ) : (
-              payslips.map((payslip) => (
-                <motion.div
-                  key={payslip.id}
-                  whileHover={{ scale: 1.01 }}
-                  className="bg-white shadow-xl/90 border border-gray-200 hover:border-emerald-500/50 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all"
-                >
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      <span className="font-black text-xl text-black">{payslip.payPeriod}</span>
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                        {payslip.status}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-500">
-                      Issue Date: {payslip.issueDate} • Net Payout: <span className="text-emerald-400 font-bold">₹{payslip.netPay.toLocaleString()}</span>
-                    </p>
-                  </div>
+              <div className="text-right text-xs font-medium text-gray-500">
+                Status: <span className="font-semibold uppercase bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md ml-2 border border-emerald-100">{selectedPayslip.status}</span>
+                <p className="mt-2 text-gray-400">Processed on {new Date(selectedPayslip.issueDate).toLocaleDateString()}</p>
+              </div>
+            </div>
 
-                  <button
-                    onClick={() => setSelectedPayslip(payslip)}
-                    className="px-5 py-2.5 rounded-xl bg-gray-50 hover:bg-emerald-600 text-black font-bold text-sm transition-colors border border-gray-200 flex items-center gap-2"
+            {/* Earnings vs Deductions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {/* Earnings */}
+              <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                <div className="flex items-center gap-2 text-emerald-600 mb-6 border-b border-gray-100 pb-4">
+                  <ArrowUpRight size={18} />
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900">Earnings</h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Base Salary</span>
+                    <span className="font-medium text-gray-900">₹{selectedPayslip.baseSalary?.toLocaleString() || 0}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">HRA</span>
+                    <span className="font-medium text-gray-900">₹{selectedPayslip.allowances?.hra?.toLocaleString() || 0}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Medical Allowance</span>
+                    <span className="font-medium text-gray-900">₹{selectedPayslip.allowances?.medical?.toLocaleString() || 0}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Special Allowance</span>
+                    <span className="font-medium text-gray-900">₹{selectedPayslip.allowances?.special?.toLocaleString() || 0}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Performance Bonus</span>
+                    <span className="font-medium text-gray-900">₹{selectedPayslip.allowances?.performanceBonus?.toLocaleString() || 0}</span>
+                  </div>
+                  <div className="pt-4 mt-2 border-t border-gray-100 flex justify-between items-center font-semibold">
+                    <span className="text-gray-900 text-xs uppercase tracking-wider">Gross Earnings</span>
+                    <span className="text-gray-900 text-base">₹{selectedPayslip.grossEarnings?.toLocaleString() || 0}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Deductions */}
+              <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                <div className="flex items-center gap-2 text-rose-600 mb-6 border-b border-gray-100 pb-4">
+                  <ArrowDownRight size={18} />
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900">Deductions</h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">PF</span>
+                    <span className="font-medium text-gray-900">-₹{selectedPayslip.deductions?.pf?.toLocaleString() || 0}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">TDS</span>
+                    <span className="font-medium text-gray-900">-₹{selectedPayslip.deductions?.tds?.toLocaleString() || 0}</span>
+                  </div>
+                  {selectedPayslip.deductions?.unpaidLeaveDeduction > 0 && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-600">Unpaid Leaves</span>
+                      <span className="font-medium text-gray-900">-₹{selectedPayslip.deductions?.unpaidLeaveDeduction?.toLocaleString()}</span>
+                    </div>
+                  )}
+                  {selectedPayslip.deductions?.otherDeductions > 0 && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-600">Other</span>
+                      <span className="font-medium text-gray-900">-₹{selectedPayslip.deductions?.otherDeductions?.toLocaleString()}</span>
+                    </div>
+                  )}
+                  <div className="pt-4 mt-2 border-t border-gray-100 flex justify-between items-center font-semibold">
+                    <span className="text-gray-900 text-xs uppercase tracking-wider">Total Deductions</span>
+                    <span className="text-gray-900 text-base">₹{selectedPayslip.totalDeductions?.toLocaleString() || 0}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </motion.div>
+
+          {/* Sidebar */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-900 mb-4 border-b border-gray-100 pb-3">Payslip History</h3>
+              <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                {payslips.map(ps => (
+                  <button 
+                    key={ps.id}
+                    onClick={() => setSelectedPayslip(ps)}
+                    className={`w-full text-left p-3 rounded-xl transition-all border ${selectedPayslip.id === ps.id ? 'bg-blue-50 border-blue-200 text-blue-900' : 'bg-transparent border-transparent hover:bg-gray-50 text-gray-600'}`}
                   >
-                    <span>📄 View Payslip</span>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className={`font-semibold text-sm ${selectedPayslip.id === ps.id ? 'text-blue-900' : 'text-gray-900'}`}>{ps.month} {ps.year}</span>
+                      <span className="text-xs font-medium bg-white px-2 py-0.5 rounded border border-gray-200 shadow-sm">₹{(ps.netPay / 1000).toFixed(1)}k</span>
+                    </div>
+                    <div className="text-[10px] uppercase tracking-wider font-medium flex items-center gap-1 opacity-70">
+                      <Calendar size={10} /> {new Date(ps.issueDate).toLocaleDateString()}
+                    </div>
                   </button>
-                </motion.div>
-              ))
-            )}
-          </div>
-        </motion.div>
-      </div>
+                ))}
+              </div>
+            </div>
 
-      {/* Modal: Itemized Payslip Preview */}
-      <AnimatePresence>
-        {selectedPayslip && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#F8F9FA]/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="bg-white shadow-xl border border-gray-200 p-8 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative"
-            >
-              <button
-                onClick={() => setSelectedPayslip(null)}
-                className="absolute top-6 right-6 text-zinc-500 hover:text-black text-xl font-bold"
-              >
-                ✕
-              </button>
-
-              <div className="border-b border-gray-200 pb-6 mb-6">
-                <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-                  DAYFLOW. Official Salary Statement
-                </span>
-                <h2 className="text-3xl font-black text-black mt-1">
-                  Payslip for {selectedPayslip.payPeriod}
-                </h2>
-                <p className="text-sm text-gray-500">
-                  Employee: {selectedPayslip.employeeName} ({selectedPayslip.designation})
+            <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-sm relative overflow-hidden">
+              <div className="relative z-10">
+                <h3 className="text-sm font-semibold mb-2">Need Help?</h3>
+                <p className="text-gray-400 text-xs mb-4 leading-relaxed">
+                  Have questions about your tax deductions or need corrections? Contact payroll.
                 </p>
-              </div>
-
-              {/* Table Breakdown */}
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                <div className="bg-zinc-950 p-5 rounded-2xl border border-gray-200">
-                  <h4 className="font-bold text-emerald-400 text-sm uppercase tracking-wider mb-3">Earnings</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span className="text-gray-500">Basic</span> <span>₹{selectedPayslip.baseSalary.toLocaleString()}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">HRA</span> <span>₹{selectedPayslip.allowances.hra.toLocaleString()}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Medical</span> <span>₹{selectedPayslip.allowances.medical.toLocaleString()}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Special</span> <span>₹{selectedPayslip.allowances.special.toLocaleString()}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Bonus</span> <span>₹{selectedPayslip.allowances.performanceBonus.toLocaleString()}</span></div>
-                    <div className="pt-2 border-t border-gray-200 flex justify-between font-bold text-black">
-                      <span>Gross Total</span> <span>₹{selectedPayslip.grossEarnings.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-zinc-950 p-5 rounded-2xl border border-gray-200">
-                  <h4 className="font-bold text-rose-400 text-sm uppercase tracking-wider mb-3">Deductions</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span className="text-gray-500">Provident Fund (PF)</span> <span>₹{selectedPayslip.deductions.pf.toLocaleString()}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">TDS / Income Tax</span> <span>₹{selectedPayslip.deductions.tds.toLocaleString()}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Unpaid Leave ({selectedPayslip.unpaidLeaveDays}d)</span> <span>₹{selectedPayslip.deductions.unpaidLeaveDeduction.toLocaleString()}</span></div>
-                    <div className="pt-2 border-t border-gray-200 flex justify-between font-bold text-black">
-                      <span>Total Deductions</span> <span>₹{selectedPayslip.totalDeductions.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Net Payout Banner */}
-              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 rounded-2xl text-black flex justify-between items-center mb-6">
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-wider text-emerald-100">Net Payable Salary</div>
-                  <div className="text-3xl font-black">₹{selectedPayslip.netPay.toLocaleString()}</div>
-                </div>
-                <div className="text-right text-xs text-emerald-100">
-                  Status: <span className="font-bold uppercase bg-white/20 px-2.5 py-1 rounded-full">{selectedPayslip.status}</span>
-                  <div className="mt-1">{selectedPayslip.paymentMethod}</div>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => alert(`Downloading Payslip PDF for ${selectedPayslip.payPeriod}...`)}
-                  className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-black font-bold rounded-xl transition-all"
-                >
-                  Download PDF Statement
+                <button className="text-xs font-semibold bg-white text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors w-full">
+                  Contact HR
                 </button>
               </div>
-            </motion.div>
+            </div>
+
           </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      </motion.div>
     </div>
   );
-};
-
-const StatCard = ({
-  label,
-  value,
-  subtext,
-  gradient,
-}: {
-  label: string;
-  value: string;
-  subtext: string;
-  gradient: string;
-}) => (
-  <motion.div
-    whileHover={{ y: -4 }}
-    className={`bg-gradient-to-br ${gradient} p-6 rounded-3xl shadow-xl relative overflow-hidden`}
-  >
-    <div className="text-black/80 font-bold text-xs uppercase tracking-wider mb-2">
-      {label}
-    </div>
-    <div className="text-3xl md:text-4xl font-black text-black tracking-tight">
-      {value}
-    </div>
-    <div className="text-xs text-black/70 mt-2 font-medium">{subtext}</div>
-  </motion.div>
-);
-
-const BreakdownRow = ({
-  label,
-  amount,
-  total,
-  color,
-  isDeduction = false,
-}: {
-  label: string;
-  amount: number;
-  total: number;
-  color: string;
-  isDeduction?: boolean;
-}) => {
-  const percentage = Math.min(100, Math.round((amount / total) * 100));
-
-  return (
-    <div>
-      <div className="flex justify-between text-sm mb-1 font-medium">
-        <span className="text-zinc-300">{label}</span>
-        <span className={isDeduction ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}>
-          {isDeduction ? '-' : ''}₹{amount.toLocaleString()} ({percentage}%)
-        </span>
-      </div>
-      <div className="w-full bg-gray-50 rounded-full h-2 overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className={`h-full ${color}`}
-        />
-      </div>
-    </div>
-  );
-};
+}

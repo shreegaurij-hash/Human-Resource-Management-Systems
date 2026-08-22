@@ -1,4 +1,9 @@
 "use client";
+import ReactMarkdown from "react-markdown";
+
+
+
+
 
 import React, { useState } from 'react';
 import { Upload, FileText, Bot, Loader2, Sparkles, CheckCircle2 } from 'lucide-react';
@@ -152,24 +157,8 @@ export const CandidateScreener = () => {
                 <p className="font-medium text-sm">Provide a JD and Resume to generate a report.</p>
               </div>
             ) : (
-              <div className="prose prose-sm max-w-none text-black prose-headings:font-black prose-headings:text-black prose-strong:font-bold prose-strong:text-black">
-                {/* We can just render the markdown. Since we don't have react-markdown installed, we'll do a simple text-to-html or just pre-wrap */}
-                <div className="whitespace-pre-wrap font-sans leading-relaxed">
-                  {evaluation.split('\n').map((line, i) => {
-                    if (line.startsWith('## ')) {
-                      return <h2 key={i} className="text-xl font-black mt-6 mb-2 text-black border-b border-gray-200 pb-2">{line.replace('## ', '')}</h2>;
-                    }
-                    if (line.startsWith('### ')) {
-                      return <h3 key={i} className="text-lg font-bold mt-4 mb-2 text-black">{line.replace('### ', '')}</h3>;
-                    }
-                    if (line.startsWith('- ')) {
-                      return <li key={i} className="ml-4 list-disc text-gray-700">{line.replace('- ', '')}</li>;
-                    }
-                    // Handle bold
-                    let formattedLine = line;
-                    return <p key={i} className="mb-2 text-gray-700">{formattedLine}</p>;
-                  })}
-                </div>
+              <div className="prose prose-sm max-w-none text-gray-800 prose-headings:font-bold prose-headings:text-gray-900 prose-strong:font-semibold prose-strong:text-gray-900 prose-p:leading-relaxed prose-a:text-blue-600">
+                <ReactMarkdown>{evaluation}</ReactMarkdown>
               </div>
             )}
           </div>

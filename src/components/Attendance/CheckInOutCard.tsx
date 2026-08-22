@@ -3,17 +3,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { attendanceService } from '../../services/attendanceService';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 
 type Status = 'IDLE' | 'CHECKED_IN' | 'CHECKED_OUT';
 
 export const CheckInOutCard = () => {
-  const employeeId = 'emp-1'; // Match Rishik's mock
+  const { user } = useCurrentUser();
+  const employeeId = user?.id || 'emp-1';
+  
   const [status, setStatus] = useState<Status>('IDLE');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Initial fetch to determine state
     const today = attendanceService.getTodayRecord(employeeId);
     if (today) {
       if (today.checkOutTime) {
@@ -22,7 +24,7 @@ export const CheckInOutCard = () => {
         setStatus('CHECKED_IN');
       }
     }
-  }, []);
+  }, [employeeId]);
 
   const handleAction = () => {
     setLoading(true);
@@ -46,18 +48,18 @@ export const CheckInOutCard = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white shadow-xl border border-gray-200 rounded-3xl p-8 max-w-sm w-full text-black shadow-2xl relative overflow-hidden"
+      className="bg-white border border-gray-200 rounded-2xl p-8 w-full shadow-sm relative overflow-hidden"
     >
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500" />
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-blue-500" />
 
-      <h2 className="text-3xl font-extrabold tracking-tight mb-2">Today's Shift</h2>
-      <p className="text-gray-500 mb-6 font-medium">
+      <h2 className="text-xl font-bold tracking-tight mb-1 text-gray-900">Today's Shift</h2>
+      <p className="text-gray-500 mb-8 font-medium text-sm">
         {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
       </p>
 
-      {error && <div className="bg-red-500/10 text-red-500 p-3 rounded-lg mb-4 text-sm font-semibold">{error}</div>}
+      {error && <div className="bg-rose-50 text-rose-700 p-3 rounded-lg mb-4 text-xs font-semibold">{error}</div>}
 
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-8">
         <AnimatePresence mode="wait">
           {status === 'IDLE' && (
             <motion.div
@@ -67,8 +69,8 @@ export const CheckInOutCard = () => {
               exit={{ scale: 0.8, opacity: 0 }}
               className="text-center"
             >
-              <div className="w-32 h-32 rounded-full border-4 border-gray-200 flex items-center justify-center mb-4">
-                <span className="text-zinc-500 text-sm font-bold uppercase tracking-widest">Ready</span>
+              <div className="w-28 h-28 rounded-full border-4 border-gray-100 flex items-center justify-center mb-4 bg-gray-50">
+                <span className="text-gray-600 text-[10px] font-bold uppercase tracking-wider">Ready</span>
               </div>
             </motion.div>
           )}
@@ -80,13 +82,13 @@ export const CheckInOutCard = () => {
               exit={{ scale: 0.8, opacity: 0 }}
               className="text-center"
             >
-              <div className="w-32 h-32 rounded-full border-4 border-green-500 flex items-center justify-center mb-4 relative">
+              <div className="w-28 h-28 rounded-full border-4 border-emerald-400 flex items-center justify-center mb-4 relative bg-emerald-50">
                 <motion.div 
-                  className="absolute inset-0 border-4 border-green-500 rounded-full"
+                  className="absolute inset-0 border-2 border-emerald-300 rounded-full"
                   animate={{ scale: [1, 1.2, 1], opacity: [1, 0, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
-                <span className="text-green-500 text-sm font-bold uppercase tracking-widest">Active</span>
+                <span className="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Active</span>
               </div>
             </motion.div>
           )}
@@ -98,8 +100,8 @@ export const CheckInOutCard = () => {
               exit={{ scale: 0.8, opacity: 0 }}
               className="text-center"
             >
-              <div className="w-32 h-32 rounded-full border-4 border-gray-200 flex items-center justify-center mb-4 bg-gray-50/50">
-                <span className="text-gray-500 text-sm font-bold uppercase tracking-widest">Done</span>
+              <div className="w-28 h-28 rounded-full border-4 border-gray-100 flex items-center justify-center mb-4 bg-gray-50">
+                <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Done</span>
               </div>
             </motion.div>
           )}
@@ -111,12 +113,12 @@ export const CheckInOutCard = () => {
         whileTap={{ scale: status !== 'CHECKED_OUT' ? 0.98 : 1 }}
         disabled={loading || status === 'CHECKED_OUT'}
         onClick={handleAction}
-        className={`w-full py-4 rounded-xl font-bold text-lg uppercase tracking-wide transition-colors ${
+        className={`w-full py-3.5 rounded-lg font-semibold text-sm transition-shadow shadow-sm ${
           status === 'IDLE' 
-            ? 'bg-white text-black hover:bg-zinc-200' 
+            ? 'bg-blue-600 text-white hover:bg-blue-700' 
             : status === 'CHECKED_IN'
-              ? 'bg-red-500 text-black hover:bg-red-600'
-              : 'bg-gray-50 text-zinc-500 cursor-not-allowed'
+              ? 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'
+              : 'bg-gray-100 text-gray-400 cursor-not-allowed shadow-none'
         }`}
       >
         {loading ? 'Processing...' : status === 'IDLE' ? 'Check In' : status === 'CHECKED_IN' ? 'Check Out' : 'Shift Complete'}

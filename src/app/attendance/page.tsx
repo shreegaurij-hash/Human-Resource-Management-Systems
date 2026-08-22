@@ -5,33 +5,37 @@ import { WeeklyHistoryView } from '../../components/Attendance/WeeklyHistoryView
 
 export default function AttendancePage() {
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-black p-8 md:p-12 font-sans selection:bg-pink-500 selection:text-black">
+    <div className="min-h-screen bg-[#F8F9FA] text-gray-900 font-sans selection:bg-blue-100 selection:text-blue-900 pb-20">
       {/* Top Navigation */}
-      <nav className="max-w-7xl mx-auto flex items-center justify-between mb-12">
-        <Link href="/" className="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-500">
-          DAYFLOW.
+      <nav className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm mb-10">
+        <Link href="/" className="text-xl font-black tracking-tighter hover:opacity-70 transition-opacity">
+          blond
         </Link>
         <div className="flex items-center gap-6 text-sm font-semibold text-gray-500">
-          <Link href="/attendance" className="text-black border-b border-pink-500 pb-0.5">Attendance</Link>
-          <Link href="/leave" className="hover:text-black transition-colors">Leave</Link>
+          <Link href="/attendance" className="text-gray-900 border-b-2 border-blue-600 pb-0.5">Attendance</Link>
+          <Link href="/leave" className="hover:text-gray-900 transition-colors">Leave</Link>
+          <Link href="/payroll" className="hover:text-gray-900 transition-colors">Salary</Link>
+          <Link href="/profile" className="hover:text-gray-900 transition-colors">Profile</Link>
         </div>
       </nav>
 
-      <header className="mb-12 max-w-7xl mx-auto">
-        <h1 className="text-5xl font-black tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-br from-white to-zinc-500">
-          Attendance
-        </h1>
-        <p className="text-gray-500 font-medium text-lg">Manage your daily logs and view your history.</p>
-      </header>
+      <div className="max-w-6xl mx-auto px-6">
+        <header className="mb-10">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">
+            Attendance
+          </h1>
+          <p className="text-gray-500 font-medium text-sm">Manage your daily logs and view your history.</p>
+        </header>
 
-      <main className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-start">
-        <div className="w-full lg:w-1/3">
-          <CheckInOutCard />
-        </div>
-        <div className="w-full lg:w-2/3">
-          <WeeklyHistoryView />
-        </div>
-      </main>
+        <main className="flex flex-col lg:flex-row gap-8 items-start">
+          <div className="w-full lg:w-1/3">
+            <CheckInOutCard />
+          </div>
+          <div className="w-full lg:w-2/3">
+            <WeeklyHistoryView />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
