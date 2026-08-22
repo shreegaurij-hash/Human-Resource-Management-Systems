@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Bot, User } from "lucide-react";
+import { MessageSquare, X, Send, Bot, User, Maximize2, Minimize2 } from "lucide-react";
 
 type Message = {
   role: "user" | "assistant";
@@ -14,6 +14,7 @@ import remarkGfm from 'remark-gfm';
 
 export function ChatbotPopup() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hi! I'm Blond AI. How can I help you navigate your HR workspace today?" }
   ]);
@@ -83,7 +84,11 @@ export function ChatbotPopup() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 w-[450px] h-[600px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden z-50"
+            className={`fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden z-50 transition-all duration-300 ${
+              isExpanded 
+                ? 'w-[90vw] h-[90vh] md:w-[80vw] md:h-[80vh] bottom-[5vh] right-[5vw] md:bottom-[10vh] md:right-[10vw]' 
+                : 'w-[450px] h-[600px] bottom-6 right-6'
+            }`}
           >
             {/* Header */}
             <div className="bg-black text-white p-4 flex items-center justify-between">
@@ -96,12 +101,20 @@ export function ChatbotPopup() {
                   <p className="text-[10px] text-gray-300">Powered by Groq</p>
                 </div>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X size={20} />
-              </button>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {isExpanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+                </button>
+                <button 
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Messages Area */}

@@ -3,6 +3,8 @@ import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motio
 import { DatasetUploader } from './DatasetUploader';
 import { AboutUsSection } from './AboutUsSection';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface HomePageProps {
   onLogin?: (role: 'Admin' | 'Employee') => void;
@@ -165,29 +167,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
             </p>
             <div className="space-y-4">
               {/* Item 1 */}
-              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+              <Link href="/profile" className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors block">
                 <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
                   <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 </div>
                 <div className="px-6 flex-1 text-lg text-black">Profile & Settings</div>
                 <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
-              </div>
+              </Link>
               {/* Item 2 */}
-              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+              <Link href="/profile" className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors block">
                 <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
                   <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
                 <div className="px-6 flex-1 text-lg text-black">Time Off Requests</div>
                 <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
-              </div>
+              </Link>
               {/* Item 3 */}
-              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+              <Link href="/profile" className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors block">
                 <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
                   <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div className="px-6 flex-1 text-lg text-black">Attendance Logs</div>
                 <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
-              </div>
+              </Link>
             </div>
           </div>
 
@@ -199,29 +201,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
             </p>
             <div className="space-y-4">
               {/* Item 1 */}
-              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+              <Link href="/admin" className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors block">
                 <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
                   <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
                 </div>
                 <div className="px-6 flex-1 text-lg text-black">Payroll Generation</div>
                 <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
-              </div>
+              </Link>
               {/* Item 2 */}
-              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+              <Link href="/admin" className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors block">
                 <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
                   <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div className="px-6 flex-1 text-lg text-black">Approve Requests</div>
                 <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
-              </div>
+              </Link>
               {/* Item 3 */}
-              <div className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors">
+              <Link href="/admin" className="flex items-center bg-[#F4F4F4] group cursor-pointer hover:bg-gray-100 transition-colors block">
                 <div className="w-16 h-16 bg-[#FCEF3B] flex items-center justify-center shrink-0">
-                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                  <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                 </div>
                 <div className="px-6 flex-1 text-lg text-black">Admin Dashboards</div>
                 <div className="px-6 text-gray-400 group-hover:text-black transition-colors">→</div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
